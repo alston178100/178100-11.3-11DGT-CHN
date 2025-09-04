@@ -3,12 +3,17 @@
 import random
 
 f = open(r"Python\11.3-Assessment\wordle_word_list.txt")
-word = f.readlines()
-for i in range(len(word)):
-    word[i] = word[i].strip()
+word_li = f.readlines()
+for i in range(len(word_li)):
+    word_li[i] = word_li[i].strip()
 
-target_word = word[random.randint(0, len(word) - 1)]
+target_word = word_li[random.randint(0, len(word_li) - 1)]
 print(target_word)
+
+f = open(r"Python\11.3-Assessment\user_word_list.txt")
+user_word_li = f.readlines()
+for i in range(len(user_word_li)):
+    user_word_li[i] = user_word_li[i].strip()
 
 user_word = ""
 attempts = 0
@@ -32,7 +37,7 @@ while attempts < 6:
     
     if len(user_word) != 5:
         print("Entered but not enough letters")
-    elif user_word not in word:
+    elif user_word not in user_word_li:
         print("Invalid word")
     else:
         attempts += 1
