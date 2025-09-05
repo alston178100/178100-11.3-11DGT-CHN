@@ -3,7 +3,7 @@
 import random
 import math
 
-# Initialisng the list of numbers for user
+# Setting up target number and user number
 
 large_ints = [25, 50, 75, 100]
 num_set = set()
@@ -47,3 +47,6 @@ while True:
     if attempt_target[0] <= 999:
         target_number = attempt_target[0]
         break
+
+print(target_number)
+print(num_set)

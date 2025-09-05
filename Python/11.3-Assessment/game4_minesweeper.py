@@ -2,6 +2,8 @@
 
 import random
 
+# Setting up minesweeper display (2D array)
+
 sweeper_li = []
 for i in range(16):
     sweeper_li.append([0] * 16)
