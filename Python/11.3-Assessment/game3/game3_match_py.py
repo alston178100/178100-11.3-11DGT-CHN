@@ -1,4 +1,4 @@
-"""Python code for game 3: Match the brainrot."""
+"""Python code for game 3: Match the Brainrot."""
 
 import random
 
