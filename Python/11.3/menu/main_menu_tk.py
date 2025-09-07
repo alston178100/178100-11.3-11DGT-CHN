@@ -29,7 +29,8 @@ root.geometry("600x600")
 root.title("Main Menu")
 
 # Main hading
-mm_heading = Label(root, text="Ethan Games Compendium")
+mm_heading = Label(root, text="Ethan Games Compendium", 
+                   font=("Times New Roman", 36))
 mm_heading.pack(pady=20)
 
 # Frame for name entering
