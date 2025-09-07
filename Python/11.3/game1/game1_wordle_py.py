@@ -1,7 +1,6 @@
 """"Python code for game 1: Wordle."""
 
 import random
-
 # Setting up user inputs
 
 f = open(r"Python\11.3\txt_files\wordle_word_list.txt")

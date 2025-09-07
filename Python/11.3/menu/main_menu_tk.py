@@ -1,16 +1,22 @@
 """Tkinter code for the main menu"""
 
 from tkinter import *
+import csv
 
 # Function for when any buttons are pressed
 def button_clicked(game_num):
-    if name_entry.get() == "":
+    username = name_entry.get()
+    if username == "":
         error_msg.pack()
     else:
         root.destroy()
+        with open(r"Python\11.3\csv_files\user_scores.csv", "a", 
+                  newline="") as file:
+            writer= csv.writer(file)
+            writer.writerow([username, 0, 0, 0, 0])
         # Accesses a new python file for each game (Avoid lots of lines)
         if game_num == 1:
-            with open(r"Python\11.3\game1\game1_wordle_tk.py") as f:
+            with open(r"Python\11.3\game1\game1_instructions.py") as f:
                 exec(f.read())
         elif game_num == 2:
             with open(r"Python\11.3\game2\game2_countdown_tk.py") as f:

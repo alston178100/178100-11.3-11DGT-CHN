@@ -1,4 +1,4 @@
-"""Tkinter code for game 1: Wordle"""
+"""Tkinter code for instructions of game 1: Wordle"""
 
 from tkinter import *
 
@@ -49,5 +49,12 @@ ins_5.pack(padx=20, pady=3, anchor="w")
 Label(g_root, text="SCORING", font=("Times New Roman", 24)).pack(pady=10)
 score_1 = Label(g_root, text=score_p1, wraplength=560, justify="left")
 score_1.pack(padx=20, pady=3, anchor="w")
+
+bottom_frame = Frame(g_root, width=560)
+menu_button = Button(bottom_frame, text="Main Menu", width=10)
+start_button = Button(bottom_frame, text="Start", width=10)
+bottom_frame.pack(side="bottom", pady=20)
+menu_button.grid(row=0,column=0, padx=(20, 200))
+start_button.grid(row=0, column=1, padx=(200, 20))
 
 g_root.mainloop()
