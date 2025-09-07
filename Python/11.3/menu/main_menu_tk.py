@@ -10,7 +10,7 @@ def button_clicked(game_num):
         root.destroy()
         # Accesses a new python file for each game (Avoid lots of lines)
         if game_num == 1:
-            with open(r"Python\11.3\game1_wordle_tk.py") as f:
+            with open(r"Python\11.3\game1\game1_wordle_tk.py") as f:
                 exec(f.read())
         elif game_num == 2:
             with open(r"Python\11.3\game2\game2_countdown_tk.py") as f:

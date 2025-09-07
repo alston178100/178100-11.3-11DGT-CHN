@@ -4,7 +4,7 @@ import random
 
 # Setting up user inputs
 
-f = open(r"Python\11.3-Assessment\txt_files\wordle_word_list.txt")
+f = open(r"Python\11.3\txt_files\wordle_word_list.txt")
 word_li = f.readlines()
 for i in range(len(word_li)):
     word_li[i] = word_li[i].strip()
@@ -12,7 +12,7 @@ for i in range(len(word_li)):
 target_word = word_li[random.randint(0, len(word_li) - 1)]
 print(target_word)
 
-f = open(r"Python\11.3-Assessment\txt_files\user_word_list.txt")
+f = open(r"Python\11.3\txt_files\user_word_list.txt")
 user_word_li = f.readlines()
 for i in range(len(user_word_li)):
     user_word_li[i] = user_word_li[i].strip()
