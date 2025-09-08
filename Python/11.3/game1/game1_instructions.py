@@ -1,6 +1,17 @@
 """Tkinter code for instructions of game 1: Wordle"""
 
 from tkinter import *
+import subprocess
+
+# Functions
+
+def ReturnMenu():
+    g_root.destroy()
+    subprocess.run(["python", r"Python\11.3\menu\main_menu_tk.py"])
+
+def GoToGame():
+    g_root.destroy()
+    subprocess.run(["python", r"Python\11.3\game1\game1_main.py"])
 
 # Text
 
@@ -21,11 +32,11 @@ ins_p5 = "Remember that you only have 6 attempts before you lose, so be very " \
 "wise with your choices. Have fun!!!"
 score_p1 = "Your score will be 7 - number of tries remaining."
 
-# Official root
+# Root page
 
 g_root = Tk(screenName="Game 1")
 g_root.title("Game 1")
-g_root.geometry("600x600")
+g_root.geometry("600x600+300+50")
 
 Label(g_root, text="GAME 1", font=("Times New Roman", 36)).pack(pady=20)
 
@@ -51,8 +62,10 @@ score_1 = Label(g_root, text=score_p1, wraplength=560, justify="left")
 score_1.pack(padx=20, pady=3, anchor="w")
 
 bottom_frame = Frame(g_root, width=560)
-menu_button = Button(bottom_frame, text="Main Menu", width=10)
-start_button = Button(bottom_frame, text="Start", width=10)
+menu_button = Button(bottom_frame, text="Main Menu", width=10, 
+                     command=ReturnMenu)
+start_button = Button(bottom_frame, text="Start", width=10, 
+                      command=GoToGame)
 bottom_frame.pack(side="bottom", pady=20)
 menu_button.grid(row=0,column=0, padx=(20, 200))
 start_button.grid(row=0, column=1, padx=(200, 20))
