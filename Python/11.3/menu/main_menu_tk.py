@@ -1,6 +1,7 @@
 """Tkinter code for the main menu"""
 
 from tkinter import *
+import subprocess
 import csv
 
 # Function for when any buttons are pressed
@@ -16,22 +17,21 @@ def button_clicked(game_num):
             writer.writerow([username, 0, 0, 0, 0])
         # Accesses a new python file for each game (Avoid lots of lines)
         if game_num == 1:
-            with open(r"Python\11.3\game1\game1_instructions.py") as f:
-                exec(f.read())
+            subprocess.run(["python", 
+                            r"Python\11.3\game1\game1_instructions.py"])
         elif game_num == 2:
-            with open(r"Python\11.3\game2\game2_countdown_tk.py") as f:
-                exec(f.read())
+            subprocess.run(["python", 
+                            r"Python\11.3\game2\game2_instructions.py"])
         elif game_num == 3:
-            with open(r"Python\11.3\game3\game3_match_tk.py") as f:
-                exec(f.read())
+            subprocess.run(["python", 
+                            r"Python\11.3\game3\game3_instructions.py"])
         else:
-            with open(
-                r"Python\11.3\game4\game4_minesweeper_tk.py") as f:
-                exec(f.read())
+            subprocess.run(["python", 
+                            r"Python\11.3\game4\game4_instructions.py"])
 
 # Root set up
 root = Tk(screenName="Main Menu")
-root.geometry("600x600")
+root.geometry("600x600+300+50")
 root.title("Main Menu")
 
 # Main hading
