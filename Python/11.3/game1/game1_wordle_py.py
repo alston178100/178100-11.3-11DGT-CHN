@@ -21,9 +21,9 @@ attempts = 0
 guessed = False
 
 while attempts < 6:
-    letter_inp = letter_inp = input("Enter letter: ")
-    while letter_inp != "]":
-        if letter_inp == "[":
+    letter_inp = input("Enter letter: ")
+    while letter_inp != "ENTER":
+        if letter_inp == "UNDO":
             if len(user_word) >= 1:
                 user_word = user_word[:-1]
             else:
