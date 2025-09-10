@@ -33,10 +33,77 @@ guessed = False
 
 # Function
 
-def DisplayLetter():
+def DisplayLetter(letter_inp):
     global user_word
     global attempts
-    global letter_inp
+    row = attempts + 1
+    col = len(user_word)
+    if row == 1:
+        if col == 1:
+            letter1_1.config(text=letter_inp)
+        if col == 2:
+            letter1_2.config(text=letter_inp)
+        if col == 3:
+            letter1_3.config(text=letter_inp)
+        if col == 4:
+            letter1_4.config(text=letter_inp)
+        if col == 5:
+            letter1_5.config(text=letter_inp)
+    if row == 2:
+        if col == 1:
+            letter2_1.config(text=letter_inp)
+        if col == 2:
+            letter2_2.config(text=letter_inp)
+        if col == 3:
+            letter2_3.config(text=letter_inp)
+        if col == 4:
+            letter2_4.config(text=letter_inp)
+        if col == 5:
+            letter2_5.config(text=letter_inp)
+    if row == 3:
+        if col == 1:
+            letter3_1.config(text=letter_inp)
+        if col == 2:
+            letter3_2.config(text=letter_inp)
+        if col == 3:
+            letter3_3.config(text=letter_inp)
+        if col == 4:
+            letter3_4.config(text=letter_inp)
+        if col == 5:
+            letter3_5.config(text=letter_inp)
+    if row == 4:
+        if col == 1:
+            letter4_1.config(text=letter_inp)
+        if col == 2:
+            letter4_2.config(text=letter_inp)
+        if col == 3:
+            letter4_3.config(text=letter_inp)
+        if col == 4:
+            letter4_4.config(text=letter_inp)
+        if col == 5:
+            letter4_5.config(text=letter_inp)
+    if row == 5:
+        if col == 1:
+            letter5_1.config(text=letter_inp)
+        if col == 2:
+            letter5_2.config(text=letter_inp)
+        if col == 3:
+            letter5_3.config(text=letter_inp)
+        if col == 4:
+            letter5_4.config(text=letter_inp)
+        if col == 5:
+            letter5_5.config(text=letter_inp)
+    if row == 6:
+        if col == 1:
+            letter6_1.config(text=letter_inp)
+        if col == 2:
+            letter6_2.config(text=letter_inp)
+        if col == 3:
+            letter6_3.config(text=letter_inp)
+        if col == 4:
+            letter6_4.config(text=letter_inp)
+        if col == 5:
+            letter6_5.config(text=letter_inp)
 
 def LetterInput(letter_inp):
     global user_word
@@ -77,7 +144,7 @@ def LetterInput(letter_inp):
     else:
         if len(user_word) < 5:
             user_word += letter_inp
-            DisplayLetter()
+            DisplayLetter(letter_inp)
         else:
             print("Too many letters")
         print(user_word)
@@ -88,6 +155,12 @@ def LayoutInit():
     guess.pack(pady=10, padx=10)
 
     w, h = 4, 2
+
+    global letter1_1
+    global letter1_2
+    global letter1_3
+    global letter1_4
+    global letter1_5
     letter1_1 = Label(guess, text="", borderwidth=2, relief="groove", 
                     width=w, height=h)
     letter1_2 = Label(guess, text="", borderwidth=2, relief="groove", 
@@ -98,6 +171,12 @@ def LayoutInit():
                     width=w, height=h)
     letter1_5 = Label(guess, text="", borderwidth=2, relief="groove", 
                     width=w, height=h)
+    
+    global letter2_1
+    global letter2_2
+    global letter2_3
+    global letter2_4
+    global letter2_5
     letter2_1 = Label(guess, text="", borderwidth=2, relief="groove", 
                     width=w, height=h)
     letter2_2 = Label(guess, text="", borderwidth=2, relief="groove", 
@@ -108,6 +187,12 @@ def LayoutInit():
                     width=w, height=h)
     letter2_5 = Label(guess, text="", borderwidth=2, relief="groove", 
                     width=w, height=h)
+    
+    global letter3_1
+    global letter3_2
+    global letter3_3
+    global letter3_4
+    global letter3_5
     letter3_1 = Label(guess, text="", borderwidth=2, relief="groove", 
                     width=w, height=h)
     letter3_2 = Label(guess, text="", borderwidth=2, relief="groove", 
@@ -118,6 +203,12 @@ def LayoutInit():
                     width=w, height=h)
     letter3_5 = Label(guess, text="", borderwidth=2, relief="groove", 
                     width=w, height=h)
+    
+    global letter4_1
+    global letter4_2
+    global letter4_3
+    global letter4_4
+    global letter4_5
     letter4_1 = Label(guess, text="", borderwidth=2, relief="groove", 
                     width=w, height=h)
     letter4_2 = Label(guess, text="", borderwidth=2, relief="groove", 
@@ -128,6 +219,12 @@ def LayoutInit():
                     width=w, height=h)
     letter4_5 = Label(guess, text="", borderwidth=2, relief="groove", 
                     width=w, height=h)
+    
+    global letter5_1
+    global letter5_2
+    global letter5_3
+    global letter5_4
+    global letter5_5
     letter5_1 = Label(guess, text="", borderwidth=2, relief="groove", 
                     width=w, height=h)
     letter5_2 = Label(guess, text="", borderwidth=2, relief="groove", 
@@ -138,6 +235,12 @@ def LayoutInit():
                     width=w, height=h)
     letter5_5 = Label(guess, text="", borderwidth=2, relief="groove", 
                     width=w, height=h)
+    
+    global letter6_1
+    global letter6_2
+    global letter6_3
+    global letter6_4
+    global letter6_5
     letter6_1 = Label(guess, text="", borderwidth=2, relief="groove", 
                     width=w, height=h)
     letter6_2 = Label(guess, text="", borderwidth=2, relief="groove", 
