@@ -3,6 +3,7 @@
 from tkinter import *
 import random
 import time
+import asyncio
 
 # Setting up user inputs
 
@@ -12,7 +13,6 @@ for i in range(len(word_li)):
     word_li[i] = word_li[i].strip().upper()
 
 target_word = word_li[random.randint(0, len(word_li) - 1)]
-print(target_word)
 
 f = open(r"Python\11.3\txt_files\user_word_list.txt")
 user_word_li = f.readlines()
@@ -38,6 +38,8 @@ def DisplayLetter(letter_inp):
     global attempts
     row = attempts + 1
     col = len(user_word)
+    if letter_inp == "":
+        col = len(user_word) + 1
     if row == 1:
         if col == 1:
             letter1_1.config(text=letter_inp)
@@ -105,24 +107,67 @@ def DisplayLetter(letter_inp):
         if col == 5:
             letter6_5.config(text=letter_inp)
 
+def AttemptResult(cond, attempt):
+    colour_list = ["Gray", "Yellow", "Green"]
+    if attempts == 1:
+        letter1_1.config(background=colour_list[int(cond[0])])
+        letter1_2.config(background=colour_list[int(cond[1])])
+        letter1_3.config(background=colour_list[int(cond[2])])
+        letter1_4.config(background=colour_list[int(cond[3])])
+        letter1_5.config(background=colour_list[int(cond[4])])
+    elif attempts == 2:
+        letter2_1.config(background=colour_list[int(cond[0])])
+        letter2_2.config(background=colour_list[int(cond[1])])
+        letter2_3.config(background=colour_list[int(cond[2])])
+        letter2_4.config(background=colour_list[int(cond[3])])
+        letter2_5.config(background=colour_list[int(cond[4])])
+    elif attempts == 3:
+        letter3_1.config(background=colour_list[int(cond[0])])
+        letter3_2.config(background=colour_list[int(cond[1])])
+        letter3_3.config(background=colour_list[int(cond[2])])
+        letter3_4.config(background=colour_list[int(cond[3])])
+        letter3_5.config(background=colour_list[int(cond[4])])
+    elif attempts == 4:
+        letter4_1.config(background=colour_list[int(cond[0])])
+        letter4_2.config(background=colour_list[int(cond[1])])
+        letter4_3.config(background=colour_list[int(cond[2])])
+        letter4_4.config(background=colour_list[int(cond[3])])
+        letter4_5.config(background=colour_list[int(cond[4])])
+    elif attempts == 5:
+        letter5_1.config(background=colour_list[int(cond[0])])
+        letter5_2.config(background=colour_list[int(cond[1])])
+        letter5_3.config(background=colour_list[int(cond[2])])
+        letter5_4.config(background=colour_list[int(cond[3])])
+        letter5_5.config(background=colour_list[int(cond[4])])
+    else:
+        letter6_1.config(background=colour_list[int(cond[0])])
+        letter6_2.config(background=colour_list[int(cond[1])])
+        letter6_3.config(background=colour_list[int(cond[2])])
+        letter6_4.config(background=colour_list[int(cond[3])])
+        letter6_5.config(background=colour_list[int(cond[4])])
+
+def ExitPage():
+    g_root.destroy()
+
 def LetterInput(letter_inp):
     global user_word
     global attempts
     if letter_inp == "ENTER":
         if len(user_word) != 5:
-            print("Entered but not enough letters")
+            pass
         elif user_word not in user_word_li:
-            print("Invalid word")
+            error_msg.config(text="Your word is invalid!")
         else:
+            error_msg.config(text="")
             attempts += 1
             if attempts == 6:
-                time.sleep(1)
+                error_msg.config(text="The word was: " + target_word)
+                g_root.after(1500, ExitPage)
                 g_root.destroy()
             elif user_word == target_word:
-                print(target_word)
-                print("Correct word")
-                time.sleep(1)
-                g_root.destroy()
+                error_msg.config(text="The word was: " + target_word)
+                AttemptResult("22222", attempts)
+                g_root.after(1500, ExitPage)
             else:
                 cond = ""
                 for i in range(5):
@@ -132,22 +177,16 @@ def LetterInput(letter_inp):
                         cond += "1"
                     else:
                         cond += "0"
-                print(user_word)
-                print(cond)
+                AttemptResult(cond, attempts)
             user_word = ""
     elif letter_inp == "UNDO":
         if len(user_word) >= 1:
             user_word = user_word[:-1]
-            print(user_word)
-        else:
-            print("No letters")
+            DisplayLetter("")
     else:
         if len(user_word) < 5:
             user_word += letter_inp
             DisplayLetter(letter_inp)
-        else:
-            print("Too many letters")
-        print(user_word)
 
 # Some very bad (But necessary) code
 def LayoutInit():
@@ -374,6 +413,10 @@ def LayoutInit():
     key_n.grid(row=0, column=7, padx=w)
     key_m.grid(row=0, column=8, padx=w)
     key_und.grid(row=0, column=9, padx=w)
+
+    global error_msg
+    error_msg = Label(text="")
+    error_msg.pack()
 
 LayoutInit()
 
