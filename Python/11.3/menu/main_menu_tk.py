@@ -32,6 +32,7 @@ def button_clicked(game_num):
             subprocess.run(["python", 
                             r"Python\11.3\game4\game4_instructions.py"])
 
+# Function for when cursor is hovered over the buttons
 def hoverChange(button, hover_colour, exit_colour):
     button.bind("<Enter>", func = lambda x: button.config(
         background=hover_colour))
