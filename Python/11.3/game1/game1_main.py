@@ -13,6 +13,7 @@ for i in range(len(word_li)):
     word_li[i] = word_li[i].strip().upper()
 
 target_word = word_li[random.randint(0, len(word_li) - 1)]
+print(target_word)
 
 f = open(r"Python\11.3\txt_files\user_word_list.txt")
 user_word_li = f.readlines()
@@ -30,6 +31,7 @@ Label(g_root, text="WORDLE", font=("Times New Roman", 36)).pack(pady=(20, 10))
 user_word = ""
 attempts = 0
 guessed = False
+correct_list = []
 
 # Function
 
@@ -107,8 +109,66 @@ def DisplayLetter(letter_inp):
         if col == 5:
             letter6_5.config(text=letter_inp)
 
-def AttemptResult(cond, attempt):
+def ChangeKeyboard(letter, cond, prev_correct):
     colour_list = ["Gray", "Yellow", "Green"]
+    if letter == "Q":
+        key_q.config(background=colour_list[max(int(cond), prev_correct * 2)])
+    elif letter == "W":
+        key_w.config(background=colour_list[max(int(cond), prev_correct * 2)])
+    elif letter == "E":
+        key_e.config(background=colour_list[max(int(cond), prev_correct * 2)])
+    elif letter == "R":
+        key_r.config(background=colour_list[max(int(cond), prev_correct * 2)])
+    elif letter == "T":
+        key_t.config(background=colour_list[max(int(cond), prev_correct * 2)])
+    elif letter == "Y":
+        key_y.config(background=colour_list[max(int(cond), prev_correct * 2)])
+    elif letter == "U":
+        key_u.config(background=colour_list[max(int(cond), prev_correct * 2)])
+    elif letter == "I":
+        key_i.config(background=colour_list[max(int(cond), prev_correct * 2)])
+    elif letter == "O":
+        key_o.config(background=colour_list[max(int(cond), prev_correct * 2)])
+    elif letter == "P":
+        key_p.config(background=colour_list[max(int(cond), prev_correct * 2)])
+    elif letter == "A":
+        key_a.config(background=colour_list[max(int(cond), prev_correct * 2)])
+    elif letter == "S":
+        key_s.config(background=colour_list[max(int(cond), prev_correct * 2)])
+    elif letter == "D":
+        key_d.config(background=colour_list[max(int(cond), prev_correct * 2)])
+    elif letter == "F":
+        key_f.config(background=colour_list[max(int(cond), prev_correct * 2)])
+    elif letter == "G":
+        key_g.config(background=colour_list[max(int(cond), prev_correct * 2)])
+    elif letter == "H":
+        key_h.config(background=colour_list[max(int(cond), prev_correct * 2)])
+    elif letter == "J":
+        key_j.config(background=colour_list[max(int(cond), prev_correct * 2)])
+    elif letter == "K":
+        key_k.config(background=colour_list[max(int(cond), prev_correct * 2)])
+    elif letter == "L":
+        key_l.config(background=colour_list[max(int(cond), prev_correct * 2)])
+    elif letter == "Z":
+        key_z.config(background=colour_list[max(int(cond), prev_correct * 2)])
+    elif letter == "X":
+        key_x.config(background=colour_list[max(int(cond), prev_correct * 2)])
+    elif letter == "C":
+        key_c.config(background=colour_list[max(int(cond), prev_correct * 2)])
+    elif letter == "V":
+        key_v.config(background=colour_list[max(int(cond), prev_correct * 2)])
+    elif letter == "B":
+        key_b.config(background=colour_list[max(int(cond), prev_correct * 2)])
+    elif letter == "N":
+        key_n.config(background=colour_list[max(int(cond), prev_correct * 2)])
+    elif letter == "M":
+        key_m.config(background=colour_list[max(int(cond), prev_correct * 2)])
+
+def AttemptResult(cond, word):
+    colour_list = ["Gray", "Yellow", "Green"]
+    for i in range(len(word)):
+        ChangeKeyboard(word[i], cond[i], word[i] in correct_list)
+    
     if attempts == 1:
         letter1_1.config(background=colour_list[int(cond[0])])
         letter1_2.config(background=colour_list[int(cond[1])])
@@ -163,21 +223,21 @@ def LetterInput(letter_inp):
             if attempts == 6:
                 error_msg.config(text="The word was: " + target_word)
                 g_root.after(1500, ExitPage)
-                g_root.destroy()
             elif user_word == target_word:
                 error_msg.config(text="The word was: " + target_word)
-                AttemptResult("22222", attempts)
+                AttemptResult("22222", user_word)
                 g_root.after(1500, ExitPage)
             else:
                 cond = ""
                 for i in range(5):
                     if user_word[i] == target_word[i]:
+                        correct_list.append(user_word[i])
                         cond += "2"
                     elif user_word[i] in target_word:
                         cond += "1"
                     else:
                         cond += "0"
-                AttemptResult(cond, attempts)
+                AttemptResult(cond, user_word)
             user_word = ""
     elif letter_inp == "UNDO":
         if len(user_word) >= 1:
@@ -323,6 +383,7 @@ def LayoutInit():
 
     keyboardr1 = Frame(g_root)
     keyboardr1.pack(pady=w, padx=10)
+    global key_q, key_w, key_e, key_r, key_t, key_y, key_u, key_i, key_o, key_p
     key_q = Button(keyboardr1, text="Q", width=int(w/2), height=int(h/2), 
                    command=lambda: LetterInput("Q"))
     key_w = Button(keyboardr1, text="W", width=int(w/2), height=int(h/2), 
@@ -356,6 +417,7 @@ def LayoutInit():
 
     keyboardr2 = Frame(g_root)
     keyboardr2.pack(pady=w, padx=10)
+    global key_a, key_s, key_d, key_f, key_g, key_h, key_j, key_k, key_l
     key_a = Button(keyboardr2, text="A", width=int(w/2), height=int(h/2), 
                    command=lambda: LetterInput("A"))
     key_s = Button(keyboardr2, text="S", width=int(w/2), height=int(h/2), 
@@ -386,6 +448,7 @@ def LayoutInit():
 
     keyboardr3 = Frame(g_root)
     keyboardr3.pack(pady=w, padx=10)
+    global key_z, key_x, key_c, key_v, key_b, key_n, key_m
     key_ent = Button(keyboardr3, text="ENTER", width=w+1, height=int(h/2), 
                    command=lambda: LetterInput("ENTER"))
     key_z = Button(keyboardr3, text="Z", width=int(w/2), height=int(h/2), 
