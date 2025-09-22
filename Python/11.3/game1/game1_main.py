@@ -2,8 +2,6 @@
 
 from tkinter import *
 import random
-import time
-import asyncio
 
 # Setting up user inputs
 
