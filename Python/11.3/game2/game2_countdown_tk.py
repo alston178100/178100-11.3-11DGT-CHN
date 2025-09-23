@@ -3,7 +3,6 @@
 from tkinter import *
 import random
 import math
-from game2_countdown_py import get_numbers
 
 g_root = Tk(screenName="Game 2")
 g_root.title("Game 2")
@@ -11,7 +10,7 @@ g_root.geometry("600x600")
 
 # Functions
 
-def get_numbers():
+def GetNumbers():
     large_ints = [25, 50, 75, 100]
     num_set = set()
 
@@ -59,8 +58,37 @@ def get_numbers():
     num_set.append(target_number)
     return num_set
 
+def UserCalc(b_val):
+    global nums_inp
+    if b_val == "enter":
+        if nums_inp[0] != 0 and nums_inp[2] != 0:
+            if nums_inp[1] == "+":
+                print(nums_inp[0] + nums_inp[2])
+            elif nums_inp[1] == "-":
+                print(nums_inp[0] - nums_inp[2])
+            elif nums_inp[1] == "*":
+                print(nums_inp[0] * nums_inp[2])
+            elif nums_inp[1] == "/":
+                if nums_inp[0] % nums_inp[2] == 0:
+                    print(int(nums_inp[0] / nums_inp[2]))
+                elif nums_inp[2] % nums_inp[0] == 0:
+                    print(int(nums_inp[2] / nums_inp[0]))
+        else:
+            print("Only 0 or 1 value entered")
+        print(nums_inp)
+        nums_inp = [0, "!", 0]
+    elif b_val in ["+", "-", "*", "/"]:
+        nums_inp[1] = b_val
+    else:
+        if nums_inp[0] == 0 or nums_inp[1] == "!" or b_val == nums_inp[0]:
+            nums_inp[0] = b_val
+        else:
+            nums_inp[2] = b_val
+    print(nums_inp)
+
 # Variables
-numbers = get_numbers()
+nums_inp = [0, "!", 0]
+numbers = GetNumbers()
 timer = 60
 
 Label(g_root, text="COUNTDOWN", font=("Times New Roman", 36)).pack(
@@ -105,27 +133,38 @@ b_font_size = 12
 b_pad = 10
 
 num_0 = Button(clickables, text=numbers[0], width=b_width, height=b_height, 
-               font=("Times New Roman", b_font_size))
+               font=("Times New Roman", b_font_size), 
+               command=lambda:UserCalc(numbers[0]))
 num_1 = Button(clickables, text=numbers[1], width=b_width, height=b_height, 
-               font=("Times New Roman", b_font_size))
+               font=("Times New Roman", b_font_size), 
+               command=lambda:UserCalc(numbers[1]))
 num_2 = Button(clickables, text=numbers[2], width=b_width, height=b_height, 
-               font=("Times New Roman", b_font_size))
+               font=("Times New Roman", b_font_size), 
+               command=lambda:UserCalc(numbers[2]))
 num_3 = Button(clickables, text=numbers[3], width=b_width, height=b_height, 
-               font=("Times New Roman", b_font_size))
+               font=("Times New Roman", b_font_size), 
+               command=lambda:UserCalc(numbers[3]))
 num_4 = Button(clickables, text=numbers[4], width=b_width, height=b_height, 
-               font=("Times New Roman", b_font_size))
+               font=("Times New Roman", b_font_size), 
+               command=lambda:UserCalc(numbers[4]))
 num_5 = Button(clickables, text=numbers[5], width=b_width, height=b_height, 
-               font=("Times New Roman", b_font_size))
+               font=("Times New Roman", b_font_size), 
+               command=lambda:UserCalc(numbers[5]))
 oper_0 = Button(clickables, text="+", width=b_width, height=b_height, 
-               font=("Times New Roman", b_font_size))
+               font=("Times New Roman", b_font_size), 
+               command=lambda:UserCalc("+"))
 oper_1 = Button(clickables, text="-", width=b_width, height=b_height, 
-               font=("Times New Roman", b_font_size))
+               font=("Times New Roman", b_font_size), 
+               command=lambda:UserCalc("-"))
 oper_2 = Button(clickables, text="×", width=b_width, height=b_height, 
-               font=("Times New Roman", b_font_size))
+               font=("Times New Roman", b_font_size), 
+               command=lambda:UserCalc("*"))
 oper_3 = Button(clickables, text="÷", width=b_width, height=b_height, 
-               font=("Times New Roman", b_font_size))
+               font=("Times New Roman", b_font_size), 
+               command=lambda:UserCalc("/"))
 submit = Button(clickables, text="Enter", width=b_width, height=b_height, 
-               font=("Times New Roman", b_font_size))
+               font=("Times New Roman", b_font_size), 
+               command=lambda:UserCalc("enter"))
 undo = Button(clickables, text="Undo", width=b_width, height=b_height, 
                font=("Times New Roman", b_font_size))
 
