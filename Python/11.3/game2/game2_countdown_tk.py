@@ -58,37 +58,195 @@ def GetNumbers():
     num_set.append(target_number)
     return num_set
 
-def UserCalc(b_val):
+def ModifyButtonsRemove():
+    global temp_label_1
+    global temp_label_2
+    button_count = len(user_nums)
+    if button_count == 5:
+        num_5.grid_forget()
+        num_0.config(text=user_nums[0])
+        num_1.config(text=user_nums[1])
+        num_2.config(text=user_nums[2])
+        num_3.config(text=user_nums[3])
+        num_4.config(text=user_nums[4])
+    elif button_count == 4:
+        num_4.grid_forget()
+        num_0.config(text=user_nums[0])
+        num_1.config(text=user_nums[1])
+        num_2.config(text=user_nums[2])
+        num_3.config(text=user_nums[3])
+    elif button_count == 3:
+        num_3.grid_forget()
+        num_0.config(text=user_nums[0])
+        num_1.config(text=user_nums[1])
+        num_2.config(text=user_nums[2])
+    elif button_count == 2:
+        num_2.grid_forget()
+        temp_label_1 = Label(clickables, width=b_width, height=b_height)
+        # Hard coded value b_pad + 5 due to strange width differences
+        temp_label_1.grid(row=0, column=2, padx=b_pad+10, pady=b_pad)
+        num_0.config(text=user_nums[0])
+        num_1.config(text=user_nums[1])
+    elif button_count == 1:
+        num_1.grid_forget()
+        temp_label_2 = Label(clickables, width=b_width, height=b_height)
+        temp_label_2.grid(row=0, column=0, padx=b_pad+10, pady=b_pad)
+        num_0.config(text=user_nums[0])
+        num_0.grid(row=0, column=1, padx=b_pad, pady=b_pad)
+
+def ModifyButtonsAdd():
+    button_count = len(user_nums)
+    print(button_count)
+    if button_count == 2:
+        num_0.config(text=user_nums[0])
+        num_1.config(text=user_nums[1])
+        temp_label_2.grid_forget()
+        num_0.grid(row=0, column=0, padx=b_pad, pady=b_pad)
+        num_1.grid(row=0, column=1, padx=b_pad, pady=b_pad)
+    elif button_count == 3:
+        num_0.config(text=user_nums[0])
+        num_1.config(text=user_nums[1])
+        num_2.config(text=user_nums[2])
+        temp_label_1.grid_forget()
+        num_2.grid(row=0, column=2, padx=b_pad, pady=b_pad)
+    elif button_count == 4:
+        num_0.config(text=user_nums[0])
+        num_1.config(text=user_nums[1])
+        num_2.config(text=user_nums[2])
+        num_3.config(text=user_nums[3])
+        num_3.grid(row=1, column=0, padx=b_pad, pady=b_pad)
+    elif button_count == 5:
+        num_0.config(text=user_nums[0])
+        num_1.config(text=user_nums[1])
+        num_2.config(text=user_nums[2])
+        num_3.config(text=user_nums[3])
+        num_4.config(text=user_nums[4])
+        num_4.grid(row=1, column=1, padx=b_pad, pady=b_pad)
+    elif button_count == 6:
+        num_0.config(text=user_nums[0])
+        num_1.config(text=user_nums[1])
+        num_2.config(text=user_nums[2])
+        num_3.config(text=user_nums[3])
+        num_4.config(text=user_nums[4])
+        num_5.config(text=user_nums[5])
+        num_5.grid(row=1, column=2, padx=b_pad, pady=b_pad)
+
+def UserCalc(b_val, ind_val):
     global nums_inp
+    global user_nums
+    global ind_0
+    valid_entry = True
+    produced = 0
+
     if b_val == "enter":
         if nums_inp[0] != 0 and nums_inp[2] != 0:
             if nums_inp[1] == "+":
-                print(nums_inp[0] + nums_inp[2])
+                produced = nums_inp[0] + nums_inp[2]
             elif nums_inp[1] == "-":
-                print(nums_inp[0] - nums_inp[2])
+                produced = abs(nums_inp[0] - nums_inp[2])
             elif nums_inp[1] == "*":
-                print(nums_inp[0] * nums_inp[2])
+                produced = nums_inp[0] * nums_inp[2]
             elif nums_inp[1] == "/":
                 if nums_inp[0] % nums_inp[2] == 0:
-                    print(int(nums_inp[0] / nums_inp[2]))
+                    produced = int(nums_inp[0] / nums_inp[2])
                 elif nums_inp[2] % nums_inp[0] == 0:
-                    print(int(nums_inp[2] / nums_inp[0]))
+                    produced = int(nums_inp[2] / nums_inp[0])
+                else:
+                    valid_entry = False
+
+            if valid_entry:
+                user_nums.remove(nums_inp[0])
+                user_nums.remove(nums_inp[2])
+                user_nums.append(produced)
+                user_history.append(user_nums.copy())
+                print("Entered")
+                print(user_history)
+                ModifyButtonsRemove()
         else:
             print("Only 0 or 1 value entered")
         print(nums_inp)
+        oper_0.configure(background="white")
+        oper_1.configure(background="white")
+        oper_2.configure(background="white")
+        oper_3.configure(background="white")
+        num_0.configure(background="white")
+        num_1.configure(background="white")
+        num_2.configure(background="white")
+        num_3.configure(background="white")
+        num_4.configure(background="white")
+        num_5.configure(background="white")
         nums_inp = [0, "!", 0]
+    elif b_val == "undo":
+        if len(user_history) != 1:
+            del user_history[-1]
+            user_nums = user_history[-1].copy()
+            ModifyButtonsAdd()
+            print("Deleted")
+            print(user_history)
+            print(user_nums)
+        else:
+            print("Nothing to undo")
     elif b_val in ["+", "-", "*", "/"]:
         nums_inp[1] = b_val
+        oper_0.configure(background="white")
+        oper_1.configure(background="white")
+        oper_2.configure(background="white")
+        oper_3.configure(background="white")
+        if b_val == "+":
+            oper_0.configure(background="lightblue")
+        elif b_val == "-":
+            oper_1.configure(background="lightblue")
+        elif b_val == "*":
+            oper_2.configure(background="lightblue")
+        else:
+            oper_3.configure(background="lightblue")
     else:
-        if nums_inp[0] == 0 or nums_inp[1] == "!" or b_val == nums_inp[0]:
+        num_0.configure(background="white")
+        num_1.configure(background="white")
+        num_2.configure(background="white")
+        num_3.configure(background="white")
+        num_4.configure(background="white")
+        num_5.configure(background="white")
+        if nums_inp[0] == 0 or nums_inp[1] == "!" or ind_0 == ind_val:
             nums_inp[0] = b_val
+            ind_0 = ind_val
+            if ind_0 == 0:
+                num_0.configure(background="lightblue")
+            elif ind_0 == 1:
+                    num_1.configure(background="lightblue")
+            elif ind_0 == 2:
+                    num_2.configure(background="lightblue")
+            elif ind_0 == 3:
+                    num_3.configure(background="lightblue")
+            elif ind_0 == 4:
+                    num_4.configure(background="lightblue")
+            elif ind_0 == 5:
+                    num_5.configure(background="lightblue")
         else:
             nums_inp[2] = b_val
-    print(nums_inp)
+            ind_1 = ind_val
+            print(ind_0)
+            print(ind_1)
+            if ind_0 == 0 or ind_1 == 0:
+                    num_0.configure(background="lightblue")
+            if ind_0 == 1 or ind_1 == 1:
+                    num_1.configure(background="lightblue")
+            if ind_0 == 2 or ind_1 == 2:
+                    num_2.configure(background="lightblue")
+            if ind_0 == 3 or ind_1 == 3:
+                    num_3.configure(background="lightblue")
+            if ind_0 == 4 or ind_1 == 4:
+                    num_4.configure(background="lightblue")
+            if ind_0 == 5 or ind_1 == 5:
+                    num_5.configure(background="lightblue")
 
 # Variables
 nums_inp = [0, "!", 0]
 numbers = GetNumbers()
+user_nums = numbers[:-1]
+user_history = []
+user_history.append(user_nums.copy())
+print(user_history)
 timer = 60
 
 Label(g_root, text="COUNTDOWN", font=("Times New Roman", 36)).pack(
@@ -132,41 +290,42 @@ b_height = 2
 b_font_size = 12
 b_pad = 10
 
-num_0 = Button(clickables, text=numbers[0], width=b_width, height=b_height, 
+num_0 = Button(clickables, text=user_nums[0], width=b_width, height=b_height, 
                font=("Times New Roman", b_font_size), 
-               command=lambda:UserCalc(numbers[0]))
-num_1 = Button(clickables, text=numbers[1], width=b_width, height=b_height, 
+               command=lambda:UserCalc(user_nums[0], 0), background="white")
+num_1 = Button(clickables, text=user_nums[1], width=b_width, 
+               height=b_height, font=("Times New Roman", b_font_size), 
+               command=lambda:UserCalc(user_nums[1], 1), background="white")
+num_2 = Button(clickables, text=user_nums[2], width=b_width, height=b_height, 
                font=("Times New Roman", b_font_size), 
-               command=lambda:UserCalc(numbers[1]))
-num_2 = Button(clickables, text=numbers[2], width=b_width, height=b_height, 
+               command=lambda:UserCalc(user_nums[2], 2), background="white")
+num_3 = Button(clickables, text=user_nums[3], width=b_width, height=b_height, 
                font=("Times New Roman", b_font_size), 
-               command=lambda:UserCalc(numbers[2]))
-num_3 = Button(clickables, text=numbers[3], width=b_width, height=b_height, 
+               command=lambda:UserCalc(user_nums[3], 3), background="white")
+num_4 = Button(clickables, text=user_nums[4], width=b_width, height=b_height, 
                font=("Times New Roman", b_font_size), 
-               command=lambda:UserCalc(numbers[3]))
-num_4 = Button(clickables, text=numbers[4], width=b_width, height=b_height, 
+               command=lambda:UserCalc(user_nums[4], 4), background="white")
+num_5 = Button(clickables, text=user_nums[5], width=b_width, height=b_height, 
                font=("Times New Roman", b_font_size), 
-               command=lambda:UserCalc(numbers[4]))
-num_5 = Button(clickables, text=numbers[5], width=b_width, height=b_height, 
-               font=("Times New Roman", b_font_size), 
-               command=lambda:UserCalc(numbers[5]))
+               command=lambda:UserCalc(user_nums[5], 5), background="white")
 oper_0 = Button(clickables, text="+", width=b_width, height=b_height, 
                font=("Times New Roman", b_font_size), 
-               command=lambda:UserCalc("+"))
+               command=lambda:UserCalc("+", -1), background="white")
 oper_1 = Button(clickables, text="-", width=b_width, height=b_height, 
                font=("Times New Roman", b_font_size), 
-               command=lambda:UserCalc("-"))
+               command=lambda:UserCalc("-", -1), background="white")
 oper_2 = Button(clickables, text="×", width=b_width, height=b_height, 
                font=("Times New Roman", b_font_size), 
-               command=lambda:UserCalc("*"))
+               command=lambda:UserCalc("*", -1), background="white")
 oper_3 = Button(clickables, text="÷", width=b_width, height=b_height, 
                font=("Times New Roman", b_font_size), 
-               command=lambda:UserCalc("/"))
+               command=lambda:UserCalc("/", -1), background="white")
 submit = Button(clickables, text="Enter", width=b_width, height=b_height, 
                font=("Times New Roman", b_font_size), 
-               command=lambda:UserCalc("enter"))
+               command=lambda:UserCalc("enter", -1), background="white")
 undo = Button(clickables, text="Undo", width=b_width, height=b_height, 
-               font=("Times New Roman", b_font_size))
+               font=("Times New Roman", b_font_size), 
+               command=lambda:UserCalc("undo", -1), background="white")
 
 num_0.grid(row=0, column=0, padx=b_pad, pady=b_pad)
 num_1.grid(row=0, column=1, padx=b_pad, pady=b_pad)
