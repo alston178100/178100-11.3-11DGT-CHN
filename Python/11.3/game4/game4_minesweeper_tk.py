@@ -56,10 +56,11 @@ def GetGrid():
         print(i)
     return sweeper_li
 
-def RevealLost():
+def RevealLost(r, c):
     for i in range(16):
         for j in range(16):
-            if sweeper_grid[i][j] == 9:
+            globals()["button_" + str(i) + "_" + str(j)].config(state=DISABLED)
+            if sweeper_grid[i][j] == 9 and (i, j) != (r, c):
                 bg_img = Label(mines_frame, image=PhotoImage(width=18, height=18), 
                                 background="white")
                 bg_img.grid(row=i, column=j)
@@ -69,6 +70,9 @@ def RevealLost():
                                 background="white")
 
 def RevealButton(r, c):
+    globals()["button_" + str(temp_button_coords[0]) + 
+              "_" + str(temp_button_coords[1])].config(
+                  background="SystemButtonFace")
     if not flag_placed[r][c]:
         globals()["button_" + str(r) + "_" + str(c)].config(state=DISABLED)
         bg_img = Label(mines_frame, image=PhotoImage(width=18, height=18), 
@@ -105,12 +109,15 @@ def RevealButton(r, c):
                     RevealButton(r, c+1)
         elif sweeper_grid[r][c] != 9:
             Label(mines_frame, text=sweeper_grid[r][c], 
-                background="white").grid(row=r, column=c)
+                  background="white", fg=colours[sweeper_grid[r][c]-1]
+                  ).grid(row=r, column=c)
         else:
-            Label(mines_frame, text="💣", background="white").grid(row=r, column=c)
-            g_root.after(10, RevealLost)
-    else:
-        print("FLAG")
+            bg_img = Label(mines_frame, image=PhotoImage(width=19, height=19), 
+                        background="red")
+            bg_img.grid(row=r, column=c)
+            Label(mines_frame, text="💣", background="red"
+                  ).grid(row=r, column=c)
+            g_root.after(10, lambda: RevealLost(r, c))
 
 def ChangeFlag(r, c):
     if flag_placed[r][c]:
@@ -129,6 +136,10 @@ def EditButtonCommands(r, c):
     globals()["button_" + str(r) + "_" + str(c)
               ].bind("<Button-3>", lambda x: ChangeFlag(r, c))
 
+# Variables
+
+colours = ["blue1", "green4", "red", "darkorchid4", "brown4", "cyan4", 
+           "black", "orange2"]
 revealed = []
 flag_placed = []
 for i in range(16):
@@ -154,5 +165,24 @@ for i in range(16):
                                     highlightthickness=0)
         EditButtonCommands(i, j)
         globals()[var_str].grid(row=i, column=j)
+
+# Searches toward the middle
+break_i_loop = False
+pixel_img_2 = PhotoImage(width=20, height=20)
+for i in range(16):
+    for j in range(4):
+        if sweeper_grid[8-i][9-j] == 0:
+            if i > 8:
+                globals()["button_" + str(16-abs(8-i)) + "_" + str(9-j)
+                          ].config(image=pixel_img_2)
+                temp_button_coords = (16-abs(8-i), 9-j)
+            else:
+                globals()["button_" + str(8-i) + "_" + str(9-j)
+                          ].config(background="yellow")
+                temp_button_coords = (8-i, 9-j)
+            break_i_loop = True
+            break
+    if break_i_loop:
+        break
 
 g_root.mainloop()
