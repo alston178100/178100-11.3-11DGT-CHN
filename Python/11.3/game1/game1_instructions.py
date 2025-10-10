@@ -11,7 +11,7 @@ def ReturnMenu():
 
 def GoToGame():
     g_root.destroy()
-    subprocess.run(["python", r"Python\11.3\game1\game1_main.py"])
+    subprocess.run(["python", r"Python\11.3\game1\game1_main_wordle.py"])
 
 # Text
 

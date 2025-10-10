@@ -5,7 +5,7 @@ import random
 
 g_root = Tk(screenName="Game 4")
 g_root.title("Game 4")
-g_root.geometry("600x600")
+g_root.geometry("600x600+300+50")
 
 # Functions
 

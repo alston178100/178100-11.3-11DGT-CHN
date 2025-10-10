@@ -6,7 +6,7 @@ import math
 
 g_root = Tk(screenName="Game 2")
 g_root.title("Game 2")
-g_root.geometry("600x600")
+g_root.geometry("600x600+300+50")
 
 # Functions
 

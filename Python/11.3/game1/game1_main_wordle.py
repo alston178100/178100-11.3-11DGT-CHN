@@ -2,6 +2,7 @@
 
 from tkinter import *
 import random
+import subprocess
 
 # Setting up user inputs
 
@@ -57,9 +58,6 @@ def AttemptResult(cond, word):
         globals()["letter" + str(attempts) + "_" + str(i)
                   ].config(background=colour_list[int(cond[i-1])])
 
-def ExitPage():
-    g_root.destroy()
-
 def LetterInput(letter_inp):
     global user_word
     global attempts
@@ -70,24 +68,25 @@ def LetterInput(letter_inp):
             error_msg.config(text="Your word is invalid!")
         else:
             error_msg.config(text="")
+            cond = ""
+            for i in range(5):
+                if user_word[i] == target_word[i]:
+                    correct_list.append(user_word[i])
+                    cond += "2"
+                elif user_word[i] in target_word:
+                    cond += "1"
+                else:
+                    cond += "0"
             attempts += 1
-            if attempts == 6:
+            if attempts == 6 and user_word != target_word:
                 error_msg.config(text="The word was: " + target_word)
-                g_root.after(1500, ExitPage)
+                AttemptResult(cond, user_word)
+                g_root.after(1500, lambda: ExitPage(False, attempts))
             elif user_word == target_word:
                 error_msg.config(text="The word was: " + target_word)
                 AttemptResult("22222", user_word)
-                g_root.after(1500, ExitPage)
+                g_root.after(1500, lambda: ExitPage(True, attempts))
             else:
-                cond = ""
-                for i in range(5):
-                    if user_word[i] == target_word[i]:
-                        correct_list.append(user_word[i])
-                        cond += "2"
-                    elif user_word[i] in target_word:
-                        cond += "1"
-                    else:
-                        cond += "0"
                 AttemptResult(cond, user_word)
             user_word = ""
     elif letter_inp == "UNDO":
@@ -151,6 +150,47 @@ def LayoutInit():
     global error_msg
     error_msg = Label(text="")
     error_msg.pack()
+
+def ReturnMenu():
+    e_root.destroy()
+    subprocess.run(["python", r"Python\11.3\menu\main_menu_tk.py"])
+
+def GoToGame():
+    e_root.destroy()
+    subprocess.run(["python", r"Python\11.3\game1\game1_main_wordle.py"])
+
+def ExitPage(win, attempts):
+    global e_root
+
+    g_root.destroy()
+
+    e_root = Tk(screenName="Game Over")
+    e_root.title("Game Over")
+    e_root.geometry("600x600+300+50")
+
+    win_text = "Congratulations! You guessed the correct word."
+    win_score = f"Your score is {7 - attempts}."
+    lose_text = "Game over! You did not get the correct word."
+    word_reveal = f"The word was: {target_word.title()}."
+
+    if win:
+        Label(e_root, text="YOU WIN", font=("Times New Roman", 36)).pack(pady=20)
+        Label(e_root, text=win_text, wraplength=560, justify="left").pack()
+        Label(e_root, text=win_score, wraplength=560, justify="left").pack()
+    else:
+        Label(e_root, text="YOU LOSE", font=("Times New Roman", 36)).pack(pady=20)
+        Label(e_root, text=lose_text, wraplength=560, justify="left").pack()
+    Label(e_root, text=word_reveal, wraplength=560, justify="left").pack()
+
+    Label(e_root, text="PLAY AGAIN?", font=("Times New Roman", 24)).pack(pady=20)
+    replay_frame = Frame(e_root, width=560)
+    replay_frame.pack()
+    replay_button = Button(replay_frame, text="Yes (I'm cool)", width=10,
+                          command=GoToGame)
+    menu_button = Button(replay_frame, text="No (I'm lame)", width=10, 
+                          command=ReturnMenu)
+    replay_button.grid(row=0, column=0, padx=20)
+    menu_button.grid(row=0, column=1, padx=20)
 
 LayoutInit()
 
