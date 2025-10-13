@@ -80,34 +80,22 @@ def RevealButton(r, c):
                         background="white")
         bg_img.grid(row=r, column=c)
         revealed[r][c] = 1
-
         if sweeper_grid[r][c] == 0:
             Label(mines_frame, background="white").grid(row=r, column=c)
             # Recursion allows all adjacent zero squares to be removed
-            if r != 0:
-                if not revealed[r-1][c]:
-                    RevealButton(r-1, c)
-                if c != 0:
-                    if not revealed[r-1][c-1]:
-                        RevealButton(r-1, c-1)
-                if c != 15:
-                    if not revealed[r-1][c+1]:
-                        RevealButton(r-1, c+1)
-            if r != 15:
-                if not revealed[r+1][c]:
-                    RevealButton(r+1, c)
-                if c != 0:
-                    if not revealed[r+1][c-1]:
-                        RevealButton(r+1, c-1)
-                if c != 15:
-                    if not revealed[r+1][c+1]:
-                        RevealButton(r+1, c+1)
-            if c != 0:
-                if not revealed[r][c-1]:
-                    RevealButton(r, c-1)
-            if c != 15:
-                if not revealed[r][c+1]:
-                    RevealButton(r, c+1)
+            surrounded_squares = []
+            surrounded_squares.append((r-1, c-1))
+            surrounded_squares.append((r-1, c))
+            surrounded_squares.append((r-1, c+1))
+            surrounded_squares.append((r, c-1))
+            surrounded_squares.append((r, c+1))
+            surrounded_squares.append((r+1, c-1))
+            surrounded_squares.append((r+1, c))
+            surrounded_squares.append((r+1, c+1))
+            for i in surrounded_squares:
+                if i[0] >= 0 and i[1] >= 0 and i[0] <= 15 and i[1] <= 15:
+                    if not revealed[i[0]][i[1]]:
+                        RevealButton(i[0], i[1])
             safe_squares_revealed += 1
         elif sweeper_grid[r][c] != 9:
             Label(mines_frame, text=sweeper_grid[r][c], 
@@ -139,10 +127,35 @@ def ChangeFlag(r, c):
         flags_left -= 1
     flags_left_text.config(text=flags_left)
 
+def Chording(r, c):
+    global flag_placed
+    global sweeper_grid
+    surrounded_squares = []
+    surrounded_squares.append((r-1, c-1))
+    surrounded_squares.append((r-1, c))
+    surrounded_squares.append((r-1, c+1))
+    surrounded_squares.append((r, c-1))
+    surrounded_squares.append((r, c+1))
+    surrounded_squares.append((r+1, c-1))
+    surrounded_squares.append((r+1, c))
+    surrounded_squares.append((r+1, c+1))
+    for i in surrounded_squares:
+        if i[0] <= 0 or i[1] <= 0:
+            surrounded_squares.remove(i)
+    surrounded_flags = 0
+    for i in surrounded_squares:
+        if flag_placed[i[0]][i[1]]:
+            surrounded_flags += 1
+    if sweeper_grid[r][c] == surrounded_flags:
+        for i in surrounded_squares:
+            RevealButton(i[0], i[1])
+
 # This function is necessary since i and j are dynamic variables
 def EditButtonCommands(r, c):
     globals()["button_" + str(r) + "_" + str(c)
               ].config(command=lambda: RevealButton(r, c))
+    globals()["button_" + str(r) + "_" + str(c)
+              ].bind("<Button-2>", lambda x: Chording(r, c))
     globals()["button_" + str(r) + "_" + str(c)
               ].bind("<Button-3>", lambda x: ChangeFlag(r, c))
 
