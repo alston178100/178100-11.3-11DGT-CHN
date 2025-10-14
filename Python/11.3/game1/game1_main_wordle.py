@@ -3,6 +3,7 @@
 from tkinter import *
 import random
 import subprocess
+import time
 
 # Setting up user inputs
 
@@ -31,6 +32,7 @@ user_word = ""
 attempts = 0
 guessed = False
 correct_list = []
+button_list = []
 
 # Function
 
@@ -49,14 +51,30 @@ def ChangeKeyboard(letter, cond, prev_correct):
     globals()["key_" + letter.lower()
               ].config(background=colour_list[max(int(cond), prev_correct * 2)])
 
-def AttemptResult(cond, word):
+def RebindLetters(letter):
+    g_root.bind(letter, lambda x: LetterInput(letter.upper()))
+    g_root.bind(letter.upper(), lambda x: LetterInput(letter.upper()))
+
+def ResultDisplay(cond, word, i):
     colour_list = ["Gray", "Yellow", "Green"]
+    globals()["letter" + str(attempts) + "_" + str(i)
+                  ].config(background=colour_list[int(cond[i-1])])
+    if i != 5:
+        g_root.after(250, lambda: ResultDisplay(cond, word, i+1))
+    else:
+        for i in button_list:
+            globals()[i].config(state=NORMAL)
+            # Necessary function since i is a dynamic variable
+            RebindLetters(i[-1])
+
+def AttemptResult(cond, word):
+    for i in button_list:
+        globals()[i].config(state=DISABLED)
+        g_root.unbind(i[-1])
+        g_root.unbind(i[-1].upper())
+    ResultDisplay(cond, word, 1)
     for i in range(len(word)):
         ChangeKeyboard(word[i], cond[i], word[i] in correct_list)
-    
-    for i in range(1, 6):
-        globals()["letter" + str(attempts) + "_" + str(i)
-                  ].config(background=colour_list[int(cond[i-1])])
 
 def LetterInput(letter_inp):
     global user_word
@@ -100,8 +118,11 @@ def LetterInput(letter_inp):
 
 def EditButtonCommands(letter):
     globals()["key_" + letter].config(command=lambda: LetterInput(letter.upper()))
+    g_root.bind(letter, lambda x: LetterInput(letter.upper()))
+    g_root.bind(letter.upper(), lambda x: LetterInput(letter.upper()))
 
 def LayoutInit():
+    global key_ent, key_und
     guess = Frame(g_root)
     guess.pack(pady=10, padx=10)
 
@@ -122,29 +143,36 @@ def LayoutInit():
                                     width=int(w/2), height=int(h/2))
         EditButtonCommands(key_var[-1])
         globals()[key_var].grid(row=0, column=i+1, padx=w)
+        button_list.append(key_var)
     
     keyboardr2 = Frame(g_root)
     keyboardr2.pack(pady=w, padx=10)
     for i in range(len("ASDFGHJKL")):
-            key_var = "key_" + "asdfghjkl"[i]
-            globals()[key_var] = Button(keyboardr2, text=key_var[-1].upper(), 
-                                        width=int(w/2), height=int(h/2))
-            EditButtonCommands(key_var[-1])
-            globals()[key_var].grid(row=0, column=i+1, padx=w)
+        key_var = "key_" + "asdfghjkl"[i]
+        globals()[key_var] = Button(keyboardr2, text=key_var[-1].upper(), 
+                                    width=int(w/2), height=int(h/2))
+        EditButtonCommands(key_var[-1])
+        globals()[key_var].grid(row=0, column=i+1, padx=w)
+        button_list.append(key_var)
 
     keyboardr3 = Frame(g_root)
     keyboardr3.pack(pady=w, padx=10)
     key_ent = Button(keyboardr3, text="ENTER", width=w+1, height=int(h/2), 
                      command=lambda: LetterInput("ENTER"))
+    g_root.bind("<Return>", lambda x: LetterInput("ENTER"))
     key_ent.grid(row=0, column=1, padx=w)
+
     for i in range(len("zxcvbnm")):
         key_var = "key_" + "zxcvbnm"[i]
         globals()[key_var] = Button(keyboardr3, text=key_var[-1].upper(), 
                                     width=int(w/2), height=int(h/2))
         EditButtonCommands(key_var[-1])
         globals()[key_var].grid(row=0, column=i+2, padx=w)
+        button_list.append(key_var)
+
     key_und = Button(keyboardr3, text="UNDO", width=w+1, height=int(h/2), 
                      command=lambda: LetterInput("UNDO"))
+    g_root.bind("<BackSpace>", lambda x: LetterInput("UNDO"))
     key_und.grid(row=0, column=9, padx=w)
 
     global error_msg
