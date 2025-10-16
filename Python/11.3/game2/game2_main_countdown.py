@@ -2,7 +2,7 @@
 
 from tkinter import *
 import random
-import math
+import subprocess
 
 g_root = Tk(screenName="Game 2")
 g_root.title("Game 2")
@@ -11,6 +11,7 @@ g_root.geometry("600x600+300+50")
 # Functions
 
 def GetNumbers():
+    global target_num
     large_ints = [25, 50, 75, 100]
     num_set = set()
 
@@ -51,11 +52,11 @@ def GetNumbers():
                 attempt_target.append(num_1 + num_2)
         
         if attempt_target[0] <= 999:
-            target_number = attempt_target[0]
+            target_num = attempt_target[0]
             break
     
     num_set = list(num_set)
-    num_set.append(target_number)
+    num_set.append(target_num)
     return num_set
 
 def ModifyButtonsRemove():
@@ -179,13 +180,23 @@ def UserCalc(b_val, ind_val):
     elif b_val == "undo":
         if len(user_history) != 1:
             del user_history[-1]
-            user_nums = user_history[-1].copy()
             ModifyButtonsAdd()
             print("Deleted")
             print(user_history)
             print(user_nums)
         else:
             print("Nothing to undo")
+        user_nums = user_history[-1].copy()
+        num_0.configure(background="white")
+        num_1.configure(background="white")
+        num_2.configure(background="white")
+        num_3.configure(background="white")
+        num_4.configure(background="white")
+        num_5.configure(background="white")
+        oper_0.configure(background="white")
+        oper_1.configure(background="white")
+        oper_2.configure(background="white")
+        oper_3.configure(background="white")
     elif b_val in ["+", "-", "*", "/"]:
         nums_inp[1] = b_val
         oper_0.configure(background="white")
@@ -240,6 +251,64 @@ def UserCalc(b_val, ind_val):
             if ind_0 == 5 or ind_1 == 5:
                     num_5.configure(background="lightblue")
 
+def DropTimer():
+    global timer
+    timer -= 1
+    timer_label.config(text=timer)
+    if timer == 0:
+        ExitPage("lose_timer")
+    else:
+        g_root.after(1000, DropTimer)
+
+def ReturnMenu():
+    e_root.destroy()
+    subprocess.run(["python", r"Python\11.3\menu\main_menu_tk.py"])
+
+def GoToGame():
+    e_root.destroy()
+    subprocess.run(["python", r"Python\11.3\game2\game2_main_countdown.py"])
+
+def ExitPage(win):
+    global e_root
+
+    g_root.destroy()
+
+    e_root = Tk(screenName="Game Over")
+    e_root.title("Game Over")
+    e_root.geometry("600x600+300+50")
+
+    score = timer * (50 - abs(target_num - user_nums[0]))
+    win_text = "Congratulations! You got the correct number!"
+    score = f"Your score is f{score}."
+    semi_win_text = "Nice try! At least you entered a decent number."
+    lose_text_time = "Game over! You ran out of time!"
+    lose_text_num = "Game over! Your number was too different!"
+
+    if win == "correct_number":
+        Label(e_root, text="YOU WIN", font=("Times New Roman", 36)).pack(pady=20)
+        Label(e_root, text=win_text, wraplength=560, justify="left").pack()
+        Label(e_root, text=score, wraplength=560, justify="left").pack()
+    elif win == "semi_correct_number":
+        Label(e_root, text="SO CLOSE...", font=("Times New Roman", 36)).pack(pady=20)
+        Label(e_root, text=semi_win_text, wraplength=560, justify="left").pack()
+        Label(e_root, text=score, wraplength=560, justify="left").pack()
+    else:
+        Label(e_root, text="GAME OVER", font=("Times New Roman", 36)).pack(pady=20)
+        if win == "lose_timer":
+            Label(e_root, text=lose_text_time, wraplength=560, justify="left").pack()
+        elif win == "lose_number":
+            Label(e_root, text=lose_text_time, wraplength=560, justify="left").pack()
+
+    Label(e_root, text="PLAY AGAIN?", font=("Times New Roman", 24)).pack(pady=20)
+    replay_frame = Frame(e_root, width=560)
+    replay_frame.pack()
+    replay_button = Button(replay_frame, text="Yes (I'm cool)", width=10,
+                          command=GoToGame)
+    menu_button = Button(replay_frame, text="No (I'm lame)", width=10, 
+                          command=ReturnMenu)
+    replay_button.grid(row=0, column=0, padx=20)
+    menu_button.grid(row=0, column=1, padx=20)
+
 # Variables
 nums_inp = [0, "!", 0]
 numbers = GetNumbers()
@@ -263,13 +332,13 @@ timer_txt = Label(top_items, text="Timer", font=(
     "Times New Roman", 28))
 target_number = Label(top_items, text=numbers[-1], borderwidth=5, font=(
     "Times New Roman", 28))
-timer = Label(top_items, text=timer, font=(
+timer_label = Label(top_items, text=timer, font=(
     "Times New Roman", 28))
 
 target_number_txt.grid(row=0, column=0, padx=30, pady=(30, 0))
 timer_txt.grid(row=0, column=1, padx=30, pady=(30, 0))
 target_number.grid(row=1, column=0, padx=30)
-timer.grid(row=1, column=1, padx=30)
+timer_label.grid(row=1, column=1, padx=30)
 
 click_titles = Frame(g_root)
 click_titles.pack()
@@ -340,4 +409,5 @@ oper_3.grid(row=1, column=4, padx=b_pad, pady=b_pad)
 submit.grid(row=0, column=5, padx=b_pad, pady=b_pad)
 undo.grid(row=1, column=5, padx=b_pad, pady=b_pad)
 
+g_root.after(1000, DropTimer)
 g_root.mainloop()
