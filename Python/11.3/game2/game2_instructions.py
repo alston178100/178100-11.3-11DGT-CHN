@@ -36,8 +36,8 @@ score_p2 = "Time Left × (50 - Absolute Difference Between Target Number and " \
 
 # Root page
 
-g_root = Tk(screenName="Game 1")
-g_root.title("Game 1")
+g_root = Tk(screenName="Game 2")
+g_root.title("Game 2")
 g_root.geometry("600x600+300+50")
 
 Label(g_root, text="GAME 2", font=("Times New Roman", 36)).pack(pady=20)

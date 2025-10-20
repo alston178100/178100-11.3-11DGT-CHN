@@ -30,7 +30,8 @@ ins_p4 = "If your word is valid, then we will provide you with the " \
 "information. Otherwise, you will need to enter another valid word."
 ins_p5 = "Remember that you only have 6 attempts before you lose, so be very " \
 "wise with your choices. Have fun!!!"
-score_p1 = "Your score will be 7 - number of tries remaining."
+score_p1 = "Your score will be as follows:"
+score_p2 = "7 - Number of Tries Remaining."
 
 # Root page
 
@@ -59,7 +60,9 @@ ins_5.pack(padx=20, pady=3, anchor="w")
 
 Label(g_root, text="SCORING", font=("Times New Roman", 24)).pack(pady=10)
 score_1 = Label(g_root, text=score_p1, wraplength=560, justify="left")
+score_2 = Label(g_root, text=score_p2, wraplength=560, justify="left")
 score_1.pack(padx=20, pady=3, anchor="w")
+score_2.pack(padx=40, pady=3, anchor="w")
 
 bottom_frame = Frame(g_root, width=560)
 menu_button = Button(bottom_frame, text="Main Menu", width=10, 

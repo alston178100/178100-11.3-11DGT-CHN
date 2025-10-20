@@ -3,6 +3,7 @@
 from tkinter import *
 import random
 import subprocess
+import csv
 
 g_root = Tk(screenName="Game 2")
 g_root.title("Game 2")
@@ -83,17 +84,18 @@ def ModifyButtonsRemove():
         num_2.config(text=user_nums[2])
     elif button_count == 2:
         num_2.grid_forget()
+        num_0.config(text=user_nums[0])
+        num_1.config(text=user_nums[1])
         temp_label_1 = Label(clickables, width=b_width, height=b_height)
         # Hard coded value b_pad + 5 due to strange width differences
         temp_label_1.grid(row=0, column=2, padx=b_pad+10, pady=b_pad)
-        num_0.config(text=user_nums[0])
-        num_1.config(text=user_nums[1])
     elif button_count == 1:
         num_1.grid_forget()
-        temp_label_2 = Label(clickables, width=b_width, height=b_height)
-        temp_label_2.grid(row=0, column=0, padx=b_pad+10, pady=b_pad)
         num_0.config(text=user_nums[0])
         num_0.grid(row=0, column=1, padx=b_pad, pady=b_pad)
+        temp_label_2 = Label(clickables, width=b_width, height=b_height)
+        temp_label_2.grid(row=0, column=0, padx=b_pad+10, pady=b_pad)
+        finish_button.pack()
 
 def ModifyButtonsAdd():
     button_count = len(user_nums)
@@ -104,6 +106,7 @@ def ModifyButtonsAdd():
         temp_label_2.grid_forget()
         num_0.grid(row=0, column=0, padx=b_pad, pady=b_pad)
         num_1.grid(row=0, column=1, padx=b_pad, pady=b_pad)
+        finish_button.pack_forget()
     elif button_count == 3:
         num_0.config(text=user_nums[0])
         num_1.config(text=user_nums[1])
@@ -180,23 +183,20 @@ def UserCalc(b_val, ind_val):
     elif b_val == "undo":
         if len(user_history) != 1:
             del user_history[-1]
+            user_nums = user_history[-1].copy()
             ModifyButtonsAdd()
-            print("Deleted")
-            print(user_history)
-            print(user_nums)
-        else:
-            print("Nothing to undo")
-        user_nums = user_history[-1].copy()
+        oper_0.configure(background="white")
+        oper_1.configure(background="white")
+        oper_2.configure(background="white")
+        oper_3.configure(background="white")
         num_0.configure(background="white")
         num_1.configure(background="white")
         num_2.configure(background="white")
         num_3.configure(background="white")
         num_4.configure(background="white")
         num_5.configure(background="white")
-        oper_0.configure(background="white")
-        oper_1.configure(background="white")
-        oper_2.configure(background="white")
-        oper_3.configure(background="white")
+        nums_inp = [0, "!", 0]
+        user_nums = user_history[-1].copy()
     elif b_val in ["+", "-", "*", "/"]:
         nums_inp[1] = b_val
         oper_0.configure(background="white")
@@ -251,14 +251,28 @@ def UserCalc(b_val, ind_val):
             if ind_0 == 5 or ind_1 == 5:
                     num_5.configure(background="lightblue")
 
-def DropTimer():
-    global timer
-    timer -= 1
-    timer_label.config(text=timer)
-    if timer == -1:
-        ExitPage("lose_timer")
+def UserComplete():
+    global timer_end
+    timer_end = True
+    g_root.after_cancel(after_var)
+    if target_num - user_nums[0] == 0:
+        ExitPage("correct_number")
+    elif abs(target_num - user_nums[0]) <= 50:
+        ExitPage("semi_correct_number")
     else:
-        g_root.after(1000, DropTimer)
+        ExitPage("lose_number")
+
+
+def DropTimer():
+    global after_var
+    global timer
+    global timer_end
+    timer = round(timer - 0.1, 2)
+    timer_label.config(text=timer)
+    if timer < 0:
+        ExitPage("lose_timer")
+    elif not timer_end:
+        after_var = g_root.after(100, DropTimer)
 
 def ReturnMenu():
     e_root.destroy()
@@ -277,27 +291,50 @@ def ExitPage(win):
     e_root.title("Game Over")
     e_root.geometry("600x600+300+50")
 
-    score = timer * (50 - abs(target_num - user_nums[0]))
+    score = round(timer * (50 - abs(target_num - user_nums[0])))
+    with open(r"Python\11.3\csv_files\user_scores.csv", "r", 
+              newline="") as file:
+        reader = csv.reader(file)
+        rows = list(reader)
+        prev_high_score = int(rows[-1][2])
+        new_high_score = max(int(rows[-1][2]), score)
+
     win_text = "Congratulations! You got the correct number!"
-    score = f"Your score is f{score}."
+    score_txt = f"Your score is {score}."
     semi_win_text = "Nice try! At least you entered a decent number."
+    high_score_text = "You also achieved a high score!"
     lose_text_time = "Game over! You ran out of time!"
     lose_text_num = "Game over! Your number was too different!"
 
-    if win == "correct_number":
-        Label(e_root, text="YOU WIN", font=("Times New Roman", 36)).pack(pady=20)
-        Label(e_root, text=win_text, wraplength=560, justify="left").pack()
-        Label(e_root, text=score, wraplength=560, justify="left").pack()
-    elif win == "semi_correct_number":
-        Label(e_root, text="SO CLOSE...", font=("Times New Roman", 36)).pack(pady=20)
-        Label(e_root, text=semi_win_text, wraplength=560, justify="left").pack()
-        Label(e_root, text=score, wraplength=560, justify="left").pack()
+    if win == "correct_number" or win == "semi_correct_number":
+        if win == "correct_number":
+            Label(e_root, text="YOU WIN", font=("Times New Roman", 36)
+                  ).pack(pady=20)
+            Label(e_root, text=win_text, wraplength=560, justify="left"
+                  ).pack()
+            Label(e_root, text=score_txt, wraplength=560, justify="left"
+                  ).pack()
+        elif win == "semi_correct_number":
+            Label(e_root, text="SO CLOSE...", font=("Times New Roman", 36)
+                  ).pack(pady=20)
+            Label(e_root, text=semi_win_text, wraplength=560, justify="left"
+                  ).pack()
+            Label(e_root, text=score_txt, wraplength=560, justify="left"
+                  ).pack()
+        if new_high_score > prev_high_score:
+            Label(e_root, text=high_score_text, wraplength=560, 
+                  justify="left").pack()
+            rows[-1][2] = new_high_score
+            with open(r"Python\11.3\csv_files\user_scores.csv", "w", 
+                      newline="") as file:
+                writer = csv.writer(file)
+                writer.writerows(rows)
     else:
         Label(e_root, text="GAME OVER", font=("Times New Roman", 36)).pack(pady=20)
         if win == "lose_timer":
             Label(e_root, text=lose_text_time, wraplength=560, justify="left").pack()
         elif win == "lose_number":
-            Label(e_root, text=lose_text_time, wraplength=560, justify="left").pack()
+            Label(e_root, text=lose_text_num, wraplength=560, justify="left").pack()
 
     Label(e_root, text="PLAY AGAIN?", font=("Times New Roman", 24)).pack(pady=20)
     replay_frame = Frame(e_root, width=560)
@@ -315,8 +352,9 @@ numbers = GetNumbers()
 user_nums = numbers[:-1]
 user_history = []
 user_history.append(user_nums.copy())
-print(user_history)
 timer = 60
+timer_end = False
+after_var = None
 
 Label(g_root, text="COUNTDOWN", font=("Times New Roman", 36)).pack(
     pady=(20, 10))
@@ -395,6 +433,9 @@ submit = Button(clickables, text="Enter", width=b_width, height=b_height,
 undo = Button(clickables, text="Undo", width=b_width, height=b_height, 
                font=("Times New Roman", b_font_size), 
                command=lambda:UserCalc("undo", -1), background="white")
+finish_button = Button(g_root, text="Finish!", width=2*b_width, 
+                       height=b_height, font=("Times New Roman", b_font_size), 
+                       command=lambda:UserComplete())
 
 num_0.grid(row=0, column=0, padx=b_pad, pady=b_pad)
 num_1.grid(row=0, column=1, padx=b_pad, pady=b_pad)
@@ -409,5 +450,5 @@ oper_3.grid(row=1, column=4, padx=b_pad, pady=b_pad)
 submit.grid(row=0, column=5, padx=b_pad, pady=b_pad)
 undo.grid(row=1, column=5, padx=b_pad, pady=b_pad)
 
-g_root.after(1000, DropTimer)
+g_root.after(100, DropTimer)
 g_root.mainloop()

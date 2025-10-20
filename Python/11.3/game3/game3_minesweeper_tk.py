@@ -2,6 +2,8 @@
 
 from tkinter import *
 import random
+import subprocess
+import csv
 
 g_root = Tk(screenName="Game 4")
 g_root.title("Game 4")
@@ -70,6 +72,8 @@ def RevealLost(r, c):
                         background="white").grid(row=i, column=j)
                 bg_img = Label(mines_frame, image=PhotoImage(width=18, height=18), 
                                 background="white")
+    g_root.after_cancel(after_var)
+    g_root.after(2000, lambda: ExitPage("lose_mine"))
 
 def RevealButton(r, c):
     global safe_squares_revealed
@@ -111,19 +115,22 @@ def RevealButton(r, c):
             Label(mines_frame, text="💣", background="red"
                   ).grid(row=r, column=c)
             g_root.after(10, lambda: RevealLost(r, c))
-        if safe_squares_revealed == 216:
-            print("WIN")
+        if safe_squares_revealed == 216 and timer_win:
+            g_root.after_cancel(after_var)
+            g_root.after(1000, lambda: ExitPage("clear"))
+        elif safe_squares_revealed == 216 and not timer_win:
+            g_root.after_cancel(after_var)
+            g_root.after(1000, lambda: ExitPage("lose_timer"))
 
 def ChangeFlag(r, c):
     global flags_left
+    button_var = "button_" + str(r) + "_" + str(c)
     if flag_placed[r][c]:
-        globals()["button_" + str(r) + "_" + str(c)].config(text="", padx=0, 
-                                                            pady=0)
+        globals()[button_var].config(text="", padx=0, pady=0)
         flag_placed[r][c] = 0
         flags_left += 1
     else:
-        globals()["button_" + str(r) + "_" + str(c)
-                  ].config(text="🚩", compound=CENTER, padx=0, pady=0,
+        globals()[button_var].config(text="🚩", compound=CENTER, padx=0, pady=0,
                            font=("Arial", 9))
         flag_placed[r][c] = 1
         flags_left -= 1
@@ -152,6 +159,71 @@ def Chording(r, c):
         for i in surrounded_squares:
             RevealButton(i[0], i[1])
 
+def ReturnMenu():
+    e_root.destroy()
+    subprocess.run(["python", r"Python\11.3\menu\main_menu_tk.py"])
+
+def GoToGame():
+    e_root.destroy()
+    subprocess.run(["python", r"Python\11.3\game3\game3_minesweeper_tk.py"])
+
+def ExitPage(win):
+    global e_root
+
+    g_root.destroy()
+
+    e_root = Tk(screenName="Game Over")
+    e_root.title("Game Over")
+    e_root.geometry("600x600+300+50")
+
+    score = 300 - timer
+    with open(r"Python\11.3\csv_files\user_scores.csv", "r", 
+              newline="") as file:
+        reader = csv.reader(file)
+        rows = list(reader)
+        prev_high_score = int(rows[-1][3])
+        new_high_score = max(int(rows[-1][3]), score)
+
+    win_text = "Congratulations! You cleared the board!"
+    score_txt = f"Your score is {score}."
+    high_score_text = "You also achieved a high score!"
+    lose_text_time = "Unlucky! You spent too long! At least you " \
+    "cleared the board..."
+    lose_text_mine = "Game over! You clicked on a mine!"
+
+    if win == "clear":
+        Label(e_root, text="YOU WIN", font=("Times New Roman", 36)
+              ).pack(pady=20)
+        Label(e_root, text=win_text, wraplength=560, justify="left").pack()
+        Label(e_root, text=score_txt, wraplength=560, justify="left").pack()
+        if new_high_score > prev_high_score:
+            Label(e_root, text=high_score_text, wraplength=560, 
+                  justify="left").pack()
+            rows[-1][3] = new_high_score
+            with open(r"Python\11.3\csv_files\user_scores.csv", "w", 
+                      newline="") as file:
+                writer = csv.writer(file)
+                writer.writerows(rows)
+    else:
+        Label(e_root, text="GAME OVER", font=("Times New Roman", 36)
+              ).pack(pady=20)
+        if win == "lose_timer":
+            Label(e_root, text=lose_text_time, wraplength=560, 
+                  justify="left").pack()
+        elif win == "lose_mine":
+            Label(e_root, text=lose_text_mine, wraplength=560, 
+                  justify="left").pack()
+
+    Label(e_root, text="PLAY AGAIN?", font=("Times New Roman", 24)).pack(pady=20)
+    replay_frame = Frame(e_root, width=560)
+    replay_frame.pack()
+    replay_button = Button(replay_frame, text="Yes (I'm cool)", width=10,
+                          command=GoToGame)
+    menu_button = Button(replay_frame, text="No (I'm lame)", width=10, 
+                          command=ReturnMenu)
+    replay_button.grid(row=0, column=0, padx=20)
+    menu_button.grid(row=0, column=1, padx=20)
+
 # This function is necessary since i and j are dynamic variables
 def EditButtonCommands(r, c):
     globals()["button_" + str(r) + "_" + str(c)
@@ -162,16 +234,15 @@ def EditButtonCommands(r, c):
               ].bind("<Button-3>", lambda x: ChangeFlag(r, c))
 
 def IncreaseTimer():
-    global safe_squares_revealed
+    global after_var
+    global timer_win
     global timer
     timer += 1
     timer_label.config(text=timer)
-    if timer == 300 or safe_squares_revealed == 216:
-        print("Game win")
-    elif timer == 300 or game_lost:
-        print("Game lost")
-    else:
-        g_root.after(1000, IncreaseTimer)
+    if timer == 300:
+        timer_win = False
+    elif not game_lost:
+        after_var = g_root.after(1000, IncreaseTimer)
 
 # Variables
 
@@ -185,6 +256,8 @@ for i in range(16):
 safe_squares_revealed = 0
 timer = 0
 game_lost = False
+timer_win = True
+after_var = None
 
 sweeper_grid = GetGrid()
 

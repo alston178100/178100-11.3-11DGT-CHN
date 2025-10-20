@@ -3,7 +3,7 @@
 from tkinter import *
 import random
 import subprocess
-import time
+import csv
 
 # Setting up user inputs
 
@@ -195,9 +195,16 @@ def ExitPage(win, attempts):
     e_root = Tk(screenName="Game Over")
     e_root.title("Game Over")
     e_root.geometry("600x600+300+50")
+    with open(r"Python\11.3\csv_files\user_scores.csv", "r", 
+              newline="") as file:
+        reader = csv.reader(file)
+        rows = list(reader)
+        prev_high_score = int(rows[-1][1])
+        new_high_score = max(int(rows[-1][1]), 7 - attempts)
 
     win_text = "Congratulations! You guessed the correct word."
     win_score = f"Your score is {7 - attempts}."
+    high_score_text = "You also achieved a high score!"
     lose_text = "Game over! You did not get the correct word."
     word_reveal = f"The word was: {target_word.title()}."
 
@@ -205,6 +212,14 @@ def ExitPage(win, attempts):
         Label(e_root, text="YOU WIN", font=("Times New Roman", 36)).pack(pady=20)
         Label(e_root, text=win_text, wraplength=560, justify="left").pack()
         Label(e_root, text=win_score, wraplength=560, justify="left").pack()
+        if new_high_score > prev_high_score:
+            Label(e_root, text=high_score_text, wraplength=560, 
+                  justify="left").pack()
+            rows[-1][1] = new_high_score
+            with open(r"Python\11.3\csv_files\user_scores.csv", "w", 
+                      newline="") as file:
+                writer = csv.writer(file)
+                writer.writerows(rows)
     else:
         Label(e_root, text="YOU LOSE", font=("Times New Roman", 36)).pack(pady=20)
         Label(e_root, text=lose_text, wraplength=560, justify="left").pack()
