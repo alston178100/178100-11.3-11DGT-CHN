@@ -255,7 +255,7 @@ def DropTimer():
     global timer
     timer -= 1
     timer_label.config(text=timer)
-    if timer == 0:
+    if timer == -1:
         ExitPage("lose_timer")
     else:
         g_root.after(1000, DropTimer)

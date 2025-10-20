@@ -57,6 +57,8 @@ def GetGrid():
     return sweeper_li
 
 def RevealLost(r, c):
+    global game_lost
+    game_lost = True
     for i in range(16):
         for j in range(16):
             globals()["button_" + str(i) + "_" + str(j)].config(state=DISABLED)
@@ -159,6 +161,18 @@ def EditButtonCommands(r, c):
     globals()["button_" + str(r) + "_" + str(c)
               ].bind("<Button-3>", lambda x: ChangeFlag(r, c))
 
+def IncreaseTimer():
+    global safe_squares_revealed
+    global timer
+    timer += 1
+    timer_label.config(text=timer)
+    if timer == 300 or safe_squares_revealed == 216:
+        print("Game win")
+    elif timer == 300 or game_lost:
+        print("Game lost")
+    else:
+        g_root.after(1000, IncreaseTimer)
+
 # Variables
 
 colours = ["blue1", "green4", "red", "darkorchid4", "brown4", "cyan4", 
@@ -169,6 +183,8 @@ for i in range(16):
     revealed.append([0] * 16)
     flag_placed.append([0] * 16)
 safe_squares_revealed = 0
+timer = 0
+game_lost = False
 
 sweeper_grid = GetGrid()
 
@@ -181,9 +197,17 @@ flags_left = 40
 upper_frame = Frame(g_root)
 upper_frame.pack(pady=10)
 
-Label(upper_frame, text="Flags Left").grid(row=0, column=0)
-flags_left_text = Label(upper_frame, text=flags_left)
-flags_left_text.grid(row=1, column=0)
+Label(upper_frame, text="Flags Left", 
+      font=("Times New Roman", 28)).grid(row=0, column=0, padx=30)
+flags_left_text = Label(upper_frame, text=flags_left, 
+                        font=("Times New Roman", 28))
+flags_left_text.grid(row=1, column=0, padx=30)
+
+Label(upper_frame, text="Timer", 
+      font=("Times New Roman", 28)).grid(row=0, column=1, padx=30)
+timer_label = Label(upper_frame, text=timer, 
+                        font=("Times New Roman", 28))
+timer_label.grid(row=1, column=1, padx=30)
 
 mines_frame = Frame(g_root, width=150, height=150)
 mines_frame.pack()
@@ -217,4 +241,5 @@ for i in range(16):
     if break_i_loop:
         break
 
+g_root.after(1000, IncreaseTimer)
 g_root.mainloop()
