@@ -336,6 +336,57 @@ def ExitPage(win):
         elif win == "lose_number":
             Label(e_root, text=lose_text_num, wraplength=560, justify="left").pack()
 
+    scores_list = []
+    for i in rows[1:]:
+        scores_list.append([i[0], int(i[2])])
+    high_score_list = []
+    for i in scores_list:
+        if len(high_score_list) == 3:
+            if i[1] >= high_score_list[0][1]:
+                high_score_list.insert(0, i)
+                del high_score_list[-1]
+            elif i[1] >= high_score_list[1][1]:
+                high_score_list.insert(1, i)
+                del high_score_list[-1]
+            elif i[1] >= high_score_list[2][1]:
+                high_score_list.insert(2, i)
+                del high_score_list[-1]
+        else:
+            if len(high_score_list) == 0:
+                high_score_list.append(i)
+            elif len(high_score_list) == 1:
+                if i[1] >= high_score_list[0][1]:
+                    high_score_list.insert(0, i)
+                else:
+                    high_score_list.append(i)
+            elif len(high_score_list) == 2:
+                if i[1] >= high_score_list[0][1]:
+                    high_score_list.insert(0, i)
+                elif i[1] >= high_score_list[1][1]:
+                    high_score_list.insert(1, i)
+                else:
+                    high_score_list.append(i)
+
+    Label(e_root, text="LEADERBOARD", font=("Times New Roman", 24)).pack(pady=20)
+    leader_frame = Frame(e_root)
+    leader_frame.pack()
+    
+    first_user = Label(leader_frame, text=high_score_list[0][0])
+    second_user = Label(leader_frame, text=high_score_list[1][0])
+    third_user = Label(leader_frame, text=high_score_list[2][0])
+    first_score = Label(leader_frame, text=high_score_list[0][1])
+    second_score = Label(leader_frame, text=high_score_list[1][1])
+    third_score = Label(leader_frame, text=high_score_list[2][1])
+
+    l_padx = 20
+    l_pady = 5
+    first_user.grid(row=0, column=0, padx=l_padx, pady=l_pady)
+    second_user.grid(row=1, column=0, padx=l_padx, pady=l_pady)
+    third_user.grid(row=2, column=0, padx=l_padx, pady=l_pady)
+    first_score.grid(row=0, column=1, padx=l_padx, pady=l_pady)
+    second_score.grid(row=1, column=1, padx=l_padx, pady=l_pady)
+    third_score.grid(row=2, column=1, padx=l_padx, pady=l_pady)
+
     Label(e_root, text="PLAY AGAIN?", font=("Times New Roman", 24)).pack(pady=20)
     replay_frame = Frame(e_root, width=560)
     replay_frame.pack()
