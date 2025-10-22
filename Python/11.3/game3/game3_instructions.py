@@ -27,8 +27,12 @@ ins_p4 = "You can right click with a mouse on a non-revealed square to " \
 "Flagging is used for you to keep track of the mines, but is not required."
 ins_p5 = "Clicking on a mine will result in the game being over, and you " \
 "must click on every non-mine square to win the game."
-ins_p6 = "Remember that there is a timer as well, and your points will " \
+ins_p6 = "You can also middle click to implement chording, which is a " \
+"strategy commonly used by more experienced minesweeper players."
+ins_p7 = "Remember that there is a timer as well, and your points will " \
 "decrease as you take longer. Have fun!!"
+ins_p8 = "WARNING: Users may experience slight lag when first trying to " \
+"use the flagging function."
 
 score_p1 = "Your score will be as follows:" 
 score_p2 = "300 - time taken in seconds"
@@ -47,6 +51,8 @@ ins_3 = Label(g_root, text=ins_p3, wraplength=560, justify="left")
 ins_4 = Label(g_root, text=ins_p4, wraplength=560, justify="left")
 ins_5 = Label(g_root, text=ins_p5, wraplength=560, justify="left")
 ins_6 = Label(g_root, text=ins_p6, wraplength=560, justify="left")
+ins_7 = Label(g_root, text=ins_p7, wraplength=560, justify="left")
+ins_8 = Label(g_root, text=ins_p8, wraplength=560, justify="left", fg="red")
 
 ins_1.pack(padx=20, pady=3, anchor="w")
 ins_2.pack(padx=20, pady=3, anchor="w")
@@ -54,6 +60,8 @@ ins_3.pack(padx=20, pady=3, anchor="w")
 ins_4.pack(padx=20, pady=3, anchor="w")
 ins_5.pack(padx=20, pady=3, anchor="w")
 ins_6.pack(padx=20, pady=3, anchor="w")
+ins_7.pack(padx=20, pady=3, anchor="w")
+ins_8.pack(padx=20, pady=3, anchor="w")
 
 Label(g_root, text="SCORING", font=("Times New Roman", 24)).pack(pady=10)
 score_1 = Label(g_root, text=score_p1, wraplength=560, justify="left")
