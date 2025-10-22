@@ -38,17 +38,32 @@ score_p2 = "7 - Number of Tries Remaining."
 g_root = Tk(screenName="Game 1")
 g_root.title("Game 1")
 g_root.geometry("600x600+300+50")
+g_root.configure(bg="Floral White")
 
-Label(g_root, text="GAME 1", font=("Times New Roman", 36)).pack(pady=20)
+title_font = "Cambria"
+text_font = "Calibri"
+text_size = 9
 
-ins_1 = Label(g_root, text=ins_p1, wraplength=560, justify="left")
-ins_2 = Label(g_root, text=ins_p2, wraplength=560, justify="left")
-ins_2_1 = Label(g_root, text=ins_p2_1, wraplength=560, justify="left")
-ins_2_2 = Label(g_root, text=ins_p2_2, wraplength=560, justify="left")
-ins_2_3 = Label(g_root, text=ins_p2_3, wraplength=560, justify="left")
-ins_3 = Label(g_root, text=ins_p3, wraplength=560, justify="left")
-ins_4 = Label(g_root, text=ins_p4, wraplength=560, justify="left")
-ins_5 = Label(g_root, text=ins_p5, wraplength=560, justify="left")
+Label(g_root, text="WORDLE", font=(title_font, 36), bg="Floral White"
+      ).pack(pady=20)
+
+ins_1 = Label(g_root, text=ins_p1, wraplength=560, justify="left",
+              font=(text_font, text_size), bg="Floral White")
+ins_2 = Label(g_root, text=ins_p2, wraplength=560, justify="left",
+              font=(text_font, text_size), bg="Floral White")
+ins_2_1 = Label(g_root, text=ins_p2_1, wraplength=560, justify="left",
+              font=(text_font, text_size), bg="Floral White")
+ins_2_2 = Label(g_root, text=ins_p2_2, wraplength=560, justify="left",
+              font=(text_font, text_size), bg="Floral White")
+ins_2_3 = Label(g_root, text=ins_p2_3, wraplength=560, justify="left",
+              font=(text_font, text_size), bg="Floral White")
+ins_3 = Label(g_root, text=ins_p3, wraplength=560, justify="left",
+              font=(text_font, text_size), bg="Floral White")
+ins_4 = Label(g_root, text=ins_p4, wraplength=560, justify="left",
+              font=(text_font, text_size), bg="Floral White")
+ins_5 = Label(g_root, text=ins_p5, wraplength=560, justify="left",
+              font=(text_font, text_size), bg="Floral White")
+
 ins_1.pack(padx=20, pady=3, anchor="w")
 ins_2.pack(padx=20, pady=(3, 1), anchor="w")
 ins_2_1.pack(padx=40, pady=1, anchor="w")
@@ -58,17 +73,22 @@ ins_3.pack(padx=20, pady=3, anchor="w")
 ins_4.pack(padx=20, pady=3, anchor="w")
 ins_5.pack(padx=20, pady=3, anchor="w")
 
-Label(g_root, text="SCORING", font=("Times New Roman", 24)).pack(pady=10)
-score_1 = Label(g_root, text=score_p1, wraplength=560, justify="left")
-score_2 = Label(g_root, text=score_p2, wraplength=560, justify="left")
+Label(g_root, text="SCORING", font=(title_font, 24), bg="Floral White"
+      ).pack(pady=10)
+score_1 = Label(g_root, text=score_p1, wraplength=560, justify="left",
+              font=(text_font, text_size), bg="Floral White")
+score_2 = Label(g_root, text=score_p2, wraplength=560, justify="left",
+              font=(text_font, text_size), bg="Floral White")
 score_1.pack(padx=20, pady=3, anchor="w")
 score_2.pack(padx=40, pady=3, anchor="w")
 
-bottom_frame = Frame(g_root, width=560)
+bottom_frame = Frame(g_root, width=560, bg="Floral White")
 menu_button = Button(bottom_frame, text="Main Menu", width=10, 
-                     command=ReturnMenu)
+                     command=ReturnMenu, font=(text_font, text_size), 
+                     bg="Floral White")
 start_button = Button(bottom_frame, text="Start", width=10, 
-                      command=GoToGame)
+                      command=GoToGame, font=(text_font, text_size), 
+                     bg="Floral White")
 bottom_frame.pack(side="bottom", pady=20)
 menu_button.grid(row=0,column=0, padx=(20, 200))
 start_button.grid(row=0, column=1, padx=(200, 20))

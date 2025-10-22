@@ -104,36 +104,44 @@ with open(r"Python\11.3\csv_files\user_scores.csv", "r") as file:
 root = Tk(screenName="Main Menu")
 root.geometry("600x600+300+50")
 root.title("Main Menu")
-root.config(cursor="tcross")
+root.config(cursor="tcross", bg="Floral White")
+
+title_font = "Cambria"
+text_font = "Calibri"
+text_size = 9
 
 # Main hading
 mm_heading = Label(root, text="Ethan Games Compendium", 
-                   font=("Times New Roman", 36))
+                   font=(title_font, 36), bg="Floral White")
 mm_heading.pack(pady=20)
 
 # Frame for name entering
-name_frame = Frame(root)
-Label(name_frame, text="Enter name: ").grid(row=0)
-name_entry = Entry(name_frame)
+name_frame = Frame(root, bg="Floral White")
+Label(name_frame, text="Enter name: ", bg="Floral White", 
+      font=(text_font, text_size)).grid(row=0)
+name_entry = Entry(name_frame, bg="Floral White")
 name_entry.grid(row=0, column=1)
 name_frame.pack()
 
 # Error message if user did not enter username
 error_msg = Label(root, text="", foreground="Red", 
-                  font=("Arial", 11, "bold"))
+                  font=(text_font, 12, "bold"), bg="Floral White")
 error_msg.pack(pady=(15, 0))
 
 # Frames for buttons
-game_frame = Frame(root)
+game_frame = Frame(root, bg="Floral White")
 button1 = Button(game_frame, text="Wordle", width=25, height=10,
                  command=lambda: button_clicked(1), cursor="target", 
-                 bg="Powder Blue", activebackground="Powder Blue")
+                 bg="Powder Blue", activebackground="Powder Blue", 
+                 font=(text_font, text_size))
 button2 = Button(game_frame, text="Countdown", width=25, height=10, 
                  command=lambda: button_clicked(2), cursor="target", 
-                 bg="Powder Blue", activebackground="Powder Blue")
+                 bg="Powder Blue", activebackground="Powder Blue", 
+                 font=(text_font, text_size))
 button3 = Button(root, text="Minesweeper", width=25, height=10, 
                  command=lambda: button_clicked(3), cursor="target", 
-                 bg="Powder Blue", activebackground="Powder Blue")
+                 bg="Powder Blue", activebackground="Powder Blue", 
+                 font=(text_font, text_size))
 
 button1.grid(row=0, pady=25, padx=25)
 button2.grid(row=0, column=1)
