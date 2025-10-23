@@ -1,4 +1,4 @@
-"""Tkinter code for instructions of game 2: Countdown."""
+"""Tkinter code for instructions of game 3: Minesweeper."""
 
 from tkinter import Tk, Label, Button, Frame
 import subprocess
@@ -15,7 +15,7 @@ def return_menu():
 def go_to_game():
     """Go to main game."""
     g_root.destroy()
-    subprocess.run(["python", 
+    subprocess.run(["python",
                     r"Python\11.3\game3\game3_main_minesweeper_tk.py"])
 
 
@@ -32,8 +32,8 @@ ins_p4 = "You can right click with a mouse on a non-revealed square to " \
  "place a flag. You can right click that square again to remove the flag. " \
  "Flagging is used for you to keep track of the mines, but is not required."
 ins_p5 = "Clicking on a mine will result in the game being over, and you " \
- "must click on every non-mine square to win the game."
-ins_p6 = "You can also middle click to implement chording, which is a " \
+ "must click on every safe square to win the game."
+ins_p6 = "You can also middle click to use chording, which is a " \
  "strategy commonly used by more experienced minesweeper players."
 ins_p7 = "Remember that there is a timer as well, and your points will " \
  "decrease as you take longer. Have fun!!"
@@ -41,7 +41,7 @@ ins_p8 = "WARNING: Users may experience slight lag when first trying to " \
  "use flagging."
 
 score_p1 = "Your score will be as follows:"
-score_p2 = "300 - time taken in seconds"
+score_p2 = "300 - Time Taken In Seconds"
 
 # Root page
 

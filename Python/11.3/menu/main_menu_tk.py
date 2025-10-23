@@ -33,7 +33,7 @@ def goto_menu():
 def button_clicked(game_num):
     """Run when a game button is clicked."""
     global v_root
-    username = name_entry.get()
+    username = name_entry.get().rstrip()
     # Checks username limitations
     if username == "":
         error_msg.config(text="You did not enter a username!")
@@ -182,13 +182,13 @@ text_font = "Calibri"
 text_size = 9
 
 # Main hading
-mm_heading = Label(root, text="Ethan Games Compendium",
+mm_heading = Label(root, text="Alston Games Compendium",
                    font=(title_font, 36), bg="Floral White")
 mm_heading.pack(pady=20)
 
 # Frame for name entering
 name_frame = Frame(root, bg="Floral White")
-Label(name_frame, text="Enter name: ", bg="Floral White",
+Label(name_frame, text="Enter Username: ", bg="Floral White",
       font=(text_font, text_size)).grid(row=0)
 name_entry = Entry(name_frame)
 name_entry.grid(row=0, column=1)

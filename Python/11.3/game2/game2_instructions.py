@@ -23,7 +23,7 @@ def go_to_game():
 ins_p1 = "Welcome to Countdown! This is a math-based game, where you try to " \
  "get as close to the target number as possible in 60 seconds using the " \
  "6 numbers that you have."
-ins_p2 = "For each step, press on two numbers and a math operator."
+ins_p2 = "For each attempt, press on two numbers and a math operator."
 ins_p3 = "Then, press enter to submit your step, which removes the two " \
  "numbers you selected and adds a number made by these two numbers and the " \
  "operator."

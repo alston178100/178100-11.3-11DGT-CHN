@@ -1,12 +1,12 @@
-"""Tkinter code for game 4: Minesweeper."""
+"""Tkinter code for game 3: Minesweeper."""
 
 from tkinter import Tk, Button, Label, Frame, DISABLED, CENTER
 import random
 import subprocess
 import csv
 
-g_root = Tk(screenName="Game 4")
-g_root.title("Game 4")
+g_root = Tk(screenName="Game 3")
+g_root.title("Game 3")
 g_root.geometry("600x600+300+50")
 g_root.configure(bg="Floral White")
 
@@ -28,6 +28,7 @@ def get_grid():
             y = random.randint(0, 15)
         mines_li.append((x, y))
 
+    # Creates the mines grid
     for i in mines_li:
         row = i[0]
         col = i[1]
@@ -66,6 +67,7 @@ def reveal_lost(r, c):
     """Reveal mines when the game is lost."""
     global game_lost
     game_lost = True
+    # Revealing the bomb through looping
     for i in range(16):
         for j in range(16):
             globals()["button_" + str(i) + "_" + str(j)].config(state=DISABLED)
@@ -76,6 +78,7 @@ def reveal_lost(r, c):
             if sweeper_grid[i][j] == 9 and (i, j) != (r, c):
                 globals()["button_" + str(i) + "_" + str(j)].config(
                     text="💣", background="snow", disabledforeground="black")
+    # Cancelling the timer allows for no errors
     g_root.after_cancel(after_var)
     g_root.after(2000, lambda: exit_page("lose_mine"))
 
@@ -85,15 +88,17 @@ def win_change(row):
     for i in range(16):
         globals()["button_" + str(row) + "_" + str(i)
                   ].config(bg="DarkSeaGreen1", disabledforeground="black")
+        # Makes sure that bombs are revealed at the end
         if sweeper_grid[row][i] == 9:
             globals()["button_" + str(row) + "_" + str(i)].config(
                 text="💣")
     if row == 15:
         if timer_win:
-            g_root.after(5000, lambda: exit_page("clear"))
+            g_root.after(1000, lambda: exit_page("clear"))
         else:
-            g_root.after(5000, lambda: exit_page("lose_timer"))
+            g_root.after(1000, lambda: exit_page("lose_timer"))
     else:
+        # Creates the animation
         g_root.after(50, win_change(row+1))
 
 
@@ -129,15 +134,18 @@ def reveal_button(r, c):
                     if not revealed[i[0]][i[1]]:
                         reveal_button(i[0], i[1])
             safe_squares_revealed += 1
+        # The selected grid has a number
         elif sweeper_grid[r][c] != 9:
             globals()["button_" + str(r) + "_" + str(c)].config(
                 text=sweeper_grid[r][c],
                 disabledforeground=colours[sweeper_grid[r][c]-1])
             safe_squares_revealed += 1
+        # The selected grid is a bomb
         else:
             globals()["button_" + str(r) + "_" + str(c)].config(
                 text="💣", background="red", disabledforeground="black")
             g_root.after(10, lambda: reveal_lost(r, c))
+        # When all safe squares have been revealed
         if safe_squares_revealed == 216:
             g_root.after_cancel(after_var)
             g_root.after(10, reveal_win)
@@ -148,6 +156,7 @@ def change_flag(r, c):
     global flags_left
     button_var = "button_" + str(r) + "_" + str(c)
     if not revealed[r][c]:
+        # Placing and removing flags system
         if flag_placed[r][c]:
             globals()[button_var].config(text="", padx=0, pady=0)
             flag_placed[r][c] = 0
@@ -180,6 +189,7 @@ def chording_func(r, c):
     for i in surrounded_squares:
         if flag_placed[i[0]][i[1]]:
             surrounded_flags += 1
+    # Reveals the surrounding squares
     if sweeper_grid[r][c] == surrounded_flags and revealed[r][c]:
         for i in surrounded_squares:
             if not revealed[i[0]][i[1]]:
@@ -208,6 +218,7 @@ def exit_page(win):
 
     g_root.destroy()
 
+    # New root created for game over
     e_root = Tk(screenName="Game Over")
     e_root.title("Game Over")
     e_root.geometry("600x500+300+50")
@@ -228,6 +239,7 @@ def exit_page(win):
         "cleared the board..."
     lose_text_mine = "Game over! You clicked on a mine!"
 
+    # The user cleared the board
     if win == "clear":
         Label(e_root, text="YOU WIN", font=(title_font, 36),
               background="Floral White").pack(pady=20)
@@ -245,6 +257,7 @@ def exit_page(win):
                 writer = csv.writer(file)
                 writer.writerows(rows)
     else:
+        # User either took too long or lost due to clicking on a mine
         Label(e_root, text="GAME OVER", font=(title_font, 36),
               background="Floral White").pack(pady=20)
         if win == "lose_timer":
@@ -256,6 +269,7 @@ def exit_page(win):
                   justify="left", font=(text_font, text_size),
                   background="Floral White").pack()
 
+    # Checking for high score
     scores_list = []
     for i in rows[1:]:
         scores_list.append([i[0], int(i[3])])
@@ -287,11 +301,13 @@ def exit_page(win):
                 else:
                     high_score_list.append(i)
 
+    # Loading the leaderboard
     Label(e_root, text="LEADERBOARD", font=(title_font, 24),
           background="Floral White").pack(pady=20)
     leader_frame = Frame(e_root, background="Floral White")
     leader_frame.pack()
 
+    # This exists if there is not enough scores
     for i in high_score_list:
         if i[1] == 0:
             i[0] = "-"
@@ -320,6 +336,7 @@ def exit_page(win):
     second_score.grid(row=1, column=1, padx=l_padx, pady=l_pady)
     third_score.grid(row=2, column=1, padx=l_padx, pady=l_pady)
 
+    # User can play again at the bottom
     Label(e_root, text="PLAY AGAIN?", font=(title_font, 24),
           background="Floral White").pack(pady=20)
     replay_frame = Frame(e_root, width=560, background="Floral White")
@@ -353,9 +370,10 @@ def increase_timer():
     global timer
     timer += 1
     timer_label.config(text=timer)
+    # Timer continues until game is over
     if timer == 300:
         timer_win = False
-    elif not game_lost:
+    if not game_lost:
         after_var = g_root.after(1000, increase_timer)
 
 
@@ -405,6 +423,7 @@ mines_frame.grid_propagate(False)
 mines_frame.pack()
 
 for i in range(16):
+    # Creating the mines with a button system
     mines_frame.rowconfigure(i, weight=1)
     mines_frame.columnconfigure(i, weight=1)
     for j in range(16):
@@ -422,6 +441,7 @@ break_i_loop = False
 for i in range(16):
     for j in range(6):
         if sweeper_grid[8-i][10-j] == 0:
+            # Middle search to ensure the correct square is highlighted
             if i > 8:
                 globals()["button_" + str(16-abs(8-i)) + "_" + str(10-j)
                           ].config(background="Yellow")
@@ -434,6 +454,16 @@ for i in range(16):
             break
     if break_i_loop:
         break
+
+# Backup if the above doesn't work (Super low chance)
+while not break_i_loop:
+    x_coord = random.randint(0, 15)
+    y_coord = random.randint(0, 15)
+    if sweeper_grid[x_coord][y_coord] == 0:
+        globals()["button_" + str(x_coord) + "_" + str(y_coord)
+                  ].config(background="Yellow")
+        temp_button_coords = (x_coord, y_coord)
+        break_i_loop = True
 
 g_root.after(1000, increase_timer)
 g_root.mainloop()

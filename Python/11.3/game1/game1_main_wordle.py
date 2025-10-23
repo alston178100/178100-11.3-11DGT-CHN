@@ -72,10 +72,11 @@ def result_display(cond, word, i):
     if i != 5:
         g_root.after(250, lambda: result_display(cond, word, i+1))
     else:
-        for i in button_list:
-            globals()[i].config(state=NORMAL)
-            # Necessary function since i is a dynamic variable
-            rebind_letters(i[-1])
+        if cond != "22222" and attempts != 6:
+            for i in button_list:
+                globals()[i].config(state=NORMAL)
+                # Necessary function since i is a dynamic variable
+                rebind_letters(i[-1])
 
 
 def attempt_result(cond, word):
