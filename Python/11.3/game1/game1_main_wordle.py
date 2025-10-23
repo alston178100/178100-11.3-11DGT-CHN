@@ -13,7 +13,6 @@ for i in range(len(word_li)):
     word_li[i] = word_li[i].strip().upper()
 
 target_word = word_li[random.randint(0, len(word_li) - 1)]
-print(target_word)
 
 f = open(r"Python\11.3\txt_files\user_word_list.txt")
 user_word_li = f.readlines()
@@ -25,6 +24,8 @@ single_word_li = f.readlines()
 for i in range(len(single_word_li)):
     single_word_li[i] = single_word_li[i].strip().upper()
 
+# Setting up main root
+
 g_root = Tk(screenName="Game 1")
 g_root.title("Game 1")
 g_root.geometry("600x530+300+50")
@@ -34,7 +35,7 @@ Label(g_root, text="WORDLE", font=("Cambria", 36),
       bg="Floral White").pack(pady=(20, 10))
 
 
-# Function
+# Functions
 
 def display_letter(letter_inp):
     """Display each individual letter."""
@@ -104,6 +105,7 @@ def letter_input(letter_inp):
         elif user_word not in single_word_li and user_word in user_word_li:
             error_msg.config(text="Your word has repeated letters!")
         else:
+            # This will run after all disallowed inputs have been cleared
             error_msg.config(text="")
             cond = ""
             for i in range(5):
@@ -215,6 +217,7 @@ def layout_init():
     g_root.bind("<BackSpace>", lambda x: letter_input("UNDO"))
     key_und.grid(row=0, column=9, padx=w)
 
+    # Error message will be shown if there is a disallowed input
     global error_msg
     error_msg = Label(text="", bg="Floral White", font=(text_font, text_size))
     error_msg.pack()

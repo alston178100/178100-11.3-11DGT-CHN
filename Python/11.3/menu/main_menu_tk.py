@@ -4,8 +4,8 @@ from tkinter import Label, Frame, Button, Tk, Entry
 import subprocess
 import csv
 
-# Functions for when any buttons are pressed
 
+# Functions for when any buttons are pressed
 
 def goto_game(game_num, user_exists, username):
     """Go to the desired game."""
@@ -45,6 +45,7 @@ def button_clicked(game_num):
     else:
         root.destroy()
         user_exists = False
+        # Checks whether the username exists
         if username in name_li:
             user_exists = True
             text_1 = "Welcome back! Please confirm that this is your "\
@@ -126,14 +127,14 @@ def button_clicked(game_num):
         # Frame for confirming username
         confirm_frame = Frame(v_root, width=560, bg="Floral White")
         confirm_frame.pack()
-        confirm_button = Button(confirm_frame, text="Yes, this is me.",
+        confirm_button = Button(confirm_frame, text="Yes, this is me",
                                 width=20,
                                 command=lambda: goto_game(
                                  game_num, user_exists, username),
                                 cursor="target", bg="LightBlue1",
                                 activebackground="LightBlue1",
                                 font=(text_font, text_size))
-        deny_button = Button(confirm_frame, text="No, this is not me.",
+        deny_button = Button(confirm_frame, text="No, this is not me",
                              width=20,
                              command=goto_menu, cursor="target",
                              bg="LightBlue1", activebackground="LightBlue1",
@@ -158,8 +159,8 @@ def hover_change(button, hover_colour, exit_colour):
     button.bind("<Leave>", func=lambda x: button.config(
         background=exit_colour))
 
-# Name list & Variables
 
+# Name list & Variables
 
 name_li = []
 info_li = []
@@ -223,6 +224,8 @@ button2.grid(row=0, column=1)
 game_frame.pack()
 button3.pack()
 button4.place(rely=1, relx=0, anchor="sw", x=10, y=-10)
+
+# Connects to the change when a button is hovered over
 
 hover_change(button1, "SkyBlue1", "LightBlue1")
 hover_change(button2, "SkyBlue1", "LightBlue1")

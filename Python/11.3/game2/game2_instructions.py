@@ -25,8 +25,8 @@ ins_p1 = "Welcome to Countdown! This is a math-based game, where you try to " \
  "6 numbers that you have."
 ins_p2 = "For each attempt, press on two numbers and a math operator."
 ins_p3 = "Then, press enter to submit your step, which removes the two " \
- "numbers you selected and adds a number made by these two numbers and the " \
- "operator."
+ "numbers you selected and inserts a number made by these two numbers and " \
+ "the operator."
 ins_p4 = "Division will only work if they divide to an integer (i.e. " \
  "Dividing to a decimal is NOT allowed)."
 ins_p5 = "Continue this process until you get to one number, which you " \
@@ -34,7 +34,7 @@ ins_p5 = "Continue this process until you get to one number, which you " \
 ins_p6 = "You will get some amount of points if your number is within 50 of " \
  "the target number, and the amount decreases as you are further away."
 ins_p7 = "There will also be a timer from 60 seconds, and not submitting a " \
- "number before the timer is up will result in no points."
+ "number before the time is up will result in no points."
 ins_p8 = "You are also able to undo your move, and this will go back to " \
  "your previous group of numbers."
 ins_p9 = "Have fun!!"
@@ -50,12 +50,16 @@ g_root.title("Game 2")
 g_root.geometry("600x600+300+50")
 g_root.configure(bg="Floral White")
 
+# Fonts for the title and texts
+
 title_font = "Cambria"
 text_font = "Calibri"
 text_size = 9
 
 Label(g_root, text="COUNTDOWN", font=(title_font, 36), bg="Floral White"
       ).pack(pady=20)
+
+# Label set up for the instruction text
 
 ins_1 = Label(g_root, text=ins_p1, wraplength=560, justify="left",
               font=(text_font, text_size), bg="Floral White")
@@ -85,6 +89,8 @@ ins_6.pack(padx=20, pady=3, anchor="w")
 ins_7.pack(padx=20, pady=3, anchor="w")
 ins_8.pack(padx=20, pady=3, anchor="w")
 ins_9.pack(padx=20, pady=3, anchor="w")
+
+# Scoring system given to user
 
 Label(g_root, text="SCORING", font=(title_font, 24), bg="Floral White"
       ).pack(pady=10)

@@ -24,9 +24,9 @@ def go_to_game():
 ins_p1 = "Welcome to Minesweeper! This is a game where you have to clear a " \
  "16 x 16 square without accidentally clicking on a mine."
 ins_p2 = "To start, click on a square. There will be a yellow highlighted " \
- "square which guarantees that there is no mine for you to start."
+ "square for you to click on which guarantees that there is no mine."
 ins_p3 = "Each number represents the number of mines adjacent to that " \
- "square. This includes to the diagonals, meaning there can be up to 8 " \
+ "square. This includes to the diagonals, meaning there is up to 8 " \
  "adjacent squares."
 ins_p4 = "You can right click with a mouse on a non-revealed square to " \
  "place a flag. You can right click that square again to remove the flag. " \
@@ -50,12 +50,16 @@ g_root.title("Game 3")
 g_root.geometry("600x600+300+50")
 g_root.configure(bg="Floral White")
 
+# Title and text fonts
+
 title_font = "Cambria"
 text_font = "Calibri"
 text_size = 9
 
 Label(g_root, text="MINESWEEPER", font=(title_font, 36), bg="Floral White"
       ).pack(pady=20)
+
+# Creating the instruction labels
 
 ins_1 = Label(g_root, text=ins_p1, wraplength=560, justify="left",
               font=(text_font, text_size), bg="Floral White")

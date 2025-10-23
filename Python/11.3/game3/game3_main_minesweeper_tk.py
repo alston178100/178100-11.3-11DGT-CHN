@@ -14,7 +14,7 @@ g_root.configure(bg="Floral White")
 # Functions
 
 def get_grid():
-    """Find the grid for minesweeper."""
+    """Make the grid for minesweeper."""
     sweeper_li = []
     for i in range(16):
         sweeper_li.append([0] * 16)
@@ -58,8 +58,6 @@ def get_grid():
             if sweeper_li[row][col+1] != 9:
                 sweeper_li[row][col+1] += 1
 
-    for i in sweeper_li:
-        print(i)
     return sweeper_li
 
 
@@ -183,6 +181,7 @@ def chording_func(r, c):
     surrounded_squares.append((r+1, c))
     surrounded_squares.append((r+1, c+1))
     for i in surrounded_squares.copy():
+        # Special case for any squares on the edge
         if i[0] < 0 or i[1] < 0 or i[0] > 15 or i[1] > 15:
             surrounded_squares.remove(i)
     surrounded_flags = 0
@@ -213,8 +212,10 @@ def exit_page(win):
     """Run when the game is completed."""
     global e_root
     global title_font
+
+    # Text font and sizes
     text_font = "Calibri"
-    text_size = 11
+    text_size = 9
 
     g_root.destroy()
 
@@ -313,6 +314,7 @@ def exit_page(win):
             i[0] = "-"
             i[1] = "-"
 
+    # Creating labels for leaderboard which is in a grid
     first_user = Label(leader_frame, text=high_score_list[0][0],
                        font=(text_font, text_size), background="Floral White")
     second_user = Label(leader_frame, text=high_score_list[1][0],
@@ -437,6 +439,7 @@ for i in range(16):
         globals()[var_str].grid(row=i, column=j, sticky="nesw")
 
 # Searches toward the middle
+
 break_i_loop = False
 for i in range(16):
     for j in range(6):
@@ -456,6 +459,7 @@ for i in range(16):
         break
 
 # Backup if the above doesn't work (Super low chance)
+
 while not break_i_loop:
     x_coord = random.randint(0, 15)
     y_coord = random.randint(0, 15)

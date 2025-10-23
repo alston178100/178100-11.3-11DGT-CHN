@@ -313,11 +313,13 @@ def exit_page(win):
 
     g_root.destroy()
 
+    # Setting up the exit page root
     e_root = Tk(screenName="Game Over")
     e_root.title("Game Over")
     e_root.geometry("600x500+300+50")
     e_root.configure(background="Floral White")
 
+    # Font setup for the titles and texts
     title_font = "Cambria"
     text_font = "Calibri"
     text_size = 9
@@ -335,7 +337,7 @@ def exit_page(win):
     semi_win_text = "Nice try! At least you entered a decent number."
     high_score_text = "You also achieved a high score!"
     lose_text_time = "Game over! You ran out of time!"
-    lose_text_num = "Game over! Your number was too different!"
+    lose_text_num = "Game over! Your number was too far away!"
 
     # Checks the win conditions for each possibility
     if win == "correct_number" or win == "semi_correct_number":
@@ -405,7 +407,7 @@ def exit_page(win):
                 else:
                     high_score_list.append(i)
 
-    # Displaying the leaderboard
+    # Creating the leaderboard
     Label(e_root, text="LEADERBOARD", font=(title_font, 24),
           bg="Floral White").pack(pady=20)
     leader_frame = Frame(e_root, bg="Floral White")
@@ -417,6 +419,7 @@ def exit_page(win):
             i[0] = "-"
             i[1] = "-"
 
+    # Displaying the leaderboard using a grid
     first_user = Label(leader_frame, text=high_score_list[0][0],
                        font=(text_font, text_size), bg="Floral White")
     second_user = Label(leader_frame, text=high_score_list[1][0],
@@ -552,6 +555,8 @@ finish_button = Button(g_root, text="Finish!", width=2*b_width,
                        height=b_height, font=(text_font, b_font_size),
                        bg="LightBlue1", activebackground="LightBlue1",
                        command=lambda: user_complete())
+
+# Clickables placed in a grid.
 
 num_0.grid(row=0, column=0, padx=b_pad, pady=b_pad)
 num_1.grid(row=0, column=1, padx=b_pad, pady=b_pad)

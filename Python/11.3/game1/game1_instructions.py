@@ -23,7 +23,7 @@ def go_to_game():
 ins_p1 = "Welcome to Wordle! In this game you will have 6 attempts to guess " \
  "a 5 letter word which will not be revealed to you."
 ins_p2 = "For each guess, you will be given information on each letter that " \
- "you have guessed."
+ "you have typed."
 ins_p2_1 = "A green means that your letter is in the word and also in the " \
  "correct position."
 ins_p2_2 = "A yellow means that your letter is in the word but not in the " \
@@ -55,6 +55,8 @@ text_size = 9
 Label(g_root, text="WORDLE", font=(title_font, 36), bg="Floral White"
       ).pack(pady=20)
 
+# Creating labels for each text
+
 ins_1 = Label(g_root, text=ins_p1, wraplength=560, justify="left",
               font=(text_font, text_size), bg="Floral White")
 ins_2 = Label(g_root, text=ins_p2, wraplength=560, justify="left",
@@ -71,9 +73,12 @@ ins_4 = Label(g_root, text=ins_p4, wraplength=560, justify="left",
               font=(text_font, text_size), bg="Floral White")
 ins_5 = Label(g_root, text=ins_p5, wraplength=560, justify="left",
               font=(text_font, text_size), bg="Floral White")
+# The red foreground makes it easier for the user to see
 ins_6 = Label(g_root, text=ins_p6, wraplength=560, justify="left",
               font=(text_font, text_size), bg="Floral White",
               fg="red")
+
+# Some labels are packed so they are slightly indented to the right
 
 ins_1.pack(padx=20, pady=3, anchor="w")
 ins_2.pack(padx=20, pady=(3, 1), anchor="w")
