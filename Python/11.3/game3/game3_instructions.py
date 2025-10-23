@@ -22,7 +22,7 @@ def go_to_game():
 # Text
 
 ins_p1 = "Welcome to Minesweeper! This is a game where you have to clear a " \
- "16 x 16 square without accidentally clicking on a mine."
+ "16 x 16 board without accidentally clicking on a mine."
 ins_p2 = "To start, click on a square. There will be a yellow highlighted " \
  "square for you to click on which guarantees that there is no mine."
 ins_p3 = "Each number represents the number of mines adjacent to that " \

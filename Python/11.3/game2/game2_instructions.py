@@ -28,7 +28,8 @@ ins_p3 = "Then, press enter to submit your step, which removes the two " \
  "numbers you selected and inserts a number made by these two numbers and " \
  "the operator."
 ins_p4 = "Division will only work if they divide to an integer (i.e. " \
- "Dividing to a decimal is NOT allowed)."
+ "Dividing to a decimal is NOT allowed). Subtraction to a zero will " \
+ "also NOT be allowed."
 ins_p5 = "Continue this process until you get to one number, which you " \
  "should make as close to the target number as possible."
 ins_p6 = "You will get some amount of points if your number is within 50 of " \

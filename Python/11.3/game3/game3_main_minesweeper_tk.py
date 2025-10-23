@@ -92,9 +92,9 @@ def win_change(row):
                 text="💣")
     if row == 15:
         if timer_win:
-            g_root.after(1000, lambda: exit_page("clear"))
+            g_root.after(2000, lambda: exit_page("clear"))
         else:
-            g_root.after(1000, lambda: exit_page("lose_timer"))
+            g_root.after(2000, lambda: exit_page("lose_timer"))
     else:
         # Creates the animation
         g_root.after(50, win_change(row+1))
